@@ -3,12 +3,13 @@ import '../styles/global.css';
 import 'katex/dist/katex.min.css';
 
 const { title = 'UniTrento Master in AI', description = 'Study notebook for the UniTrento Master in Artificial Intelligence' } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 const current = Astro.url.pathname;
 
 const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
 const currentPath = normalizePath(current);
-const hrefFor = (path = '') => `${base}${path}`;
+const hrefFor = (path = '') => `${base}${path.replace(/^\/+/, '')}`;
 const isActive = (href) => currentPath === normalizePath(href);
 const isWithin = (href) => currentPath === normalizePath(href) || currentPath.startsWith(`${normalizePath(href)}/`);
 
