@@ -1,0 +1,253 @@
+---
+title: "Class 2 — Learning in Graphical Models"
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../../components/NoteBlock.astro';
+
+<BaseLayout title="Class 2 — Learning in Graphical Models · A.P.">
+<div class="eyebrow">Machine Learning · Module 1 · A.P.</div>
+# Class 2 — Learning in Graphical Models
+
+This class moves from **using** a Bayesian network to **learning its parameters from data**.
+
+## 1. Parameter estimation
+
+Assume the graph structure is already given. We observe a dataset:
+
+$$
+D=\{\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\}
+$$
+
+and estimate the conditional probability distributions.
+
+Maximum likelihood chooses the parameters that make the observed dataset most likely:
+
+$$
+\theta^{ML}=\arg\max_\theta P(D\mid\theta)
+$$
+
+<NoteBlock type="definition" title="Simplified definition — likelihood">
+The dataset stays fixed; we vary $\theta$ and ask which parameter values explain the observed data best.
+</NoteBlock>
+
+## 2. Learning Bayesian networks
+
+One important property of Bayesian networks is that they give a **graphical representation of a probability distribution**.
+
+$$
+P(X_1,\ldots,X_m)=\prod_{j=1}^{m}P(X_j\mid Pa(X_j))
+$$
+
+<NoteBlock type="connection" title="Useful connection">
+The DAG, the local CPDs, and the complete joint distribution are three views of the same model.
+</NoteBlock>
+
+## 3. Complete-data likelihood
+
+If training examples are independent given the parameters:
+
+$$
+P(D\mid\theta)=\prod_{i=1}^{N}P(\mathbf{x}^{(i)}\mid\theta)
+$$
+
+and each example factorizes according to the Bayesian network:
+
+$$
+P(D\mid\theta)=
+\prod_{i=1}^{N}\prod_{j=1}^{m}
+P(x_j^{(i)}\mid pa_j^{(i)},\theta)
+$$
+
+Each node has its own disjoint CPD parameter set:
+
+$$
+P(D\mid\theta)=
+\prod_{i=1}^{N}\prod_{j=1}^{m}
+P(x_j^{(i)}\mid pa_j^{(i)},\theta_{X_j\mid Pa_j})
+$$
+
+<NoteBlock type="explanation" title="Further explanation — the two products">
+The outer product runs over training examples. The inner product runs over nodes inside one example and comes from the Bayesian-network factorization.
+</NoteBlock>
+
+## 4. CPD tables
+
+For a discrete node $X$ with parents $U$:
+
+- rows correspond to possible values of $X$;
+- columns correspond to configurations of $U$;
+- each cell is
+
+$$
+\theta_{x\mid u}=P(X=x\mid U=u)
+$$
+
+For a fixed parent configuration $u$:
+
+$$
+\sum_x \theta_{x\mid u}=1
+$$
+
+<NoteBlock type="definition" title="Simplified definition — one column">
+Fixing one parent configuration leaves you with **one probability distribution over the child variable**.
+</NoteBlock>
+
+## 5. Blackboard example — estimating CPTs with MLE
+
+Suppose:
+
+$$
+X_1\to X_2,\qquad X_1\to X_3
+$$
+
+and the complete dataset is:
+
+| Example | $X_1$ | $X_2$ | $X_3$ |
+|---|---|---|---|
+| 1 | T | C | T |
+| 2 | F | C | F |
+| 3 | T | S | T |
+| 4 | F | R | F |
+| 5 | F | R | F |
+
+### Estimate $P(X_1)$
+
+$$
+P(X_1=T)=\frac25,\qquad P(X_1=F)=\frac35
+$$
+
+### Estimate $P(X_2\mid X_1)$
+
+| $X_2$ | $X_1=T$ | $X_1=F$ |
+|---|---:|---:|
+| C | $1/2$ | $1/3$ |
+| S | $1/2$ | $0$ |
+| R | $0$ | $2/3$ |
+
+In theta notation:
+
+$$
+\theta_{C\mid F}=\frac13,\qquad
+\theta_{S\mid F}=0,\qquad
+\theta_{R\mid F}=\frac23
+$$
+
+and:
+
+$$
+\theta_{C\mid F}+\theta_{S\mid F}+\theta_{R\mid F}=1
+$$
+
+### Estimate $P(X_3\mid X_1)$
+
+| $X_3$ | $X_1=T$ | $X_1=F$ |
+|---|---:|---:|
+| T | 1 | 0 |
+| F | 0 | 1 |
+
+The general MLE rule is:
+
+$$
+\boxed{
+\theta^{ML}_{x\mid u}
+=
+\frac{N_{u,x}}{\sum_{x'}N_{u,x'}}
+}
+$$
+
+<NoteBlock type="definition" title="Simplified definition — CPT MLE">
+Fix the parent configuration, count the desired child value, and divide by the total number of examples with that parent configuration.
+</NoteBlock>
+
+## 6. Bernoulli, Binomial, Categorical, Multinomial
+
+A single column is one distribution.
+
+- **Bernoulli:** one binary outcome.
+- **Binomial:** counts from repeated Bernoulli trials.
+- **Categorical:** one outcome among several categories.
+- **Multinomial:** counts from repeated categorical trials.
+
+For the column $X_1=F$:
+
+$$
+(\theta_{C\mid F},\theta_{S\mid F},\theta_{R\mid F})
+=
+\left(\frac13,0,\frac23\right)
+$$
+
+and the corresponding observed counts are:
+
+$$
+(N_{F,C},N_{F,S},N_{F,R})=(1,0,2)
+$$
+
+## 7. Why counts are enough
+
+The local likelihood can be grouped as:
+
+$$
+L(\theta_{X\mid U},D)
+=
+\prod_u\prod_x
+\theta_{x\mid u}^{N_{u,x}}
+$$
+
+Repeated observations of the same configuration appear as an exponent equal to their count.
+
+## 8. Adding priors
+
+Pure MLE can assign zero probability to unseen configurations. MAP estimation combines likelihood with a prior:
+
+$$
+\theta^{MAP}
+=
+\arg\max_\theta P(D\mid\theta)P(\theta)
+$$
+
+<NoteBlock type="explanation" title="Further explanation — zero-count problem">
+One zero CPD entry can make an entire joint configuration have probability zero, even if the event simply did not occur in a small sample.
+</NoteBlock>
+
+## 9. Dirichlet priors
+
+For multinomial CPDs, the natural conjugate prior is Dirichlet.
+
+A useful pseudo-count interpretation is:
+
+$$
+\text{effective count}=N_{u,x}+\alpha_{x\mid u}
+$$
+
+The resulting estimate has the form:
+
+$$
+\theta_{x\mid u}
+=
+\frac{N_{u,x}+\alpha_{x\mid u}}
+{\sum_{x'}(N_{u,x'}+\alpha_{x'\mid u})}
+$$
+
+## 10. Incomplete data
+
+With missing variables, the required configuration counts cannot always be computed directly.
+
+<NoteBlock type="explanation" title="Further explanation — expected counts">
+If a missing binary state has posterior probability $0.8$, the example can contribute an expected count of $0.8$ rather than forcing a hard 0 or 1.
+</NoteBlock>
+
+## 11. Expectation-Maximization
+
+EM alternates:
+
+1. **E-step:** use current parameters and inference to compute expected sufficient statistics;
+2. **M-step:** update parameters to maximize likelihood or posterior using those expected counts;
+3. repeat.
+
+<NoteBlock type="definition" title="Simplified definition — EM">
+**Complete data:** count → estimate parameters.
+
+**Missing data:** infer expected counts → estimate parameters → infer again → repeat.
+</NoteBlock>
+
+</BaseLayout>
