@@ -9,11 +9,10 @@ The repository is designed to grow across the whole master's degree. At the mome
 - Master overview
   - Machine Learning
     - Module 1
-      - Andrea Passerini
+      - A.P.
         - Class 1 — Bayesian Networks
         - Class 2 — Learning in Graphical Models
-        - Official slides & handouts
-      - Farid Melgani
+      - F.M.
         - Moodle recordings & slides
         - Lecture-note migration area
     - Module 2
@@ -60,9 +59,8 @@ The workflow automatically sets Astro's base path to `/unitn-master-ia`, so the 
 
 ## Current Machine Learning resources
 
-- Andrea Passerini — slides & handouts: https://disi.unitn.it/~passerini/teaching/2026-2027/MachineLearning_AIS/index.html
-- Andrea Passerini — recordings: class Moodle
-- Farid Melgani — Moodle recordings & slides: https://didatticaonline.unitn.it/dol/course/view.php?id=44129
+- A.P. — official class materials and recordings are kept in the private course platforms.
+- F.M. — Moodle recordings & slides: https://didatticaonline.unitn.it/dol/course/view.php?id=44129
 
 ## Content convention
 
