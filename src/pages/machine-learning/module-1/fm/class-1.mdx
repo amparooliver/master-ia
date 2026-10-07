@@ -1,0 +1,197 @@
+---
+title: "Class 1 — Basic Concepts and Signal Acquisition"
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../../components/NoteBlock.astro';
+
+<BaseLayout title="Class 1 — Basic Concepts and Signal Acquisition · F.M.">
+<div class="eyebrow">Machine Learning · Module 1 · F.M.</div>
+
+# Class 1 — Basic Concepts and Signal Acquisition
+
+This lecture introduces signals, digitization, image representations, and the main machine-learning paradigms.
+
+## Essential summary
+
+- Signal dimensionality is determined by independent coordinates.
+- Digitization combines sampling and quantization.
+- With $b$ bits, an encoded value can represent up to $2^b$ levels.
+- Images use spatial coordinates; videos add time; multiband images add channels.
+- Supervised, unsupervised, semi-supervised, active, and reinforcement learning differ in the information available during learning.
+- Classification, regression, captioning, and ranking produce different kinds of outputs.
+
+## 1. Signals and dimensionality
+
+<div class="eyebrow">Slide 3 · Recording 02:20–10:35</div>
+
+A **signal** is a varying quantity that carries information about a phenomenon.
+
+- A one-dimensional signal depends on one independent variable, for example $T(t)$.
+- A multidimensional signal depends on multiple independent variables, for example $T(t,h)$.
+- An image can be written as $I(x,y)$ because two spatial coordinates locate each pixel.
+
+<NoteBlock type="blackboard" title="Blackboard example — sensor array">
+A $4\times3$ sensor array produces 12 pixel measurements. With 8-bit encoding, each value can range from 0 to 255.
+</NoteBlock>
+
+<NoteBlock type="explanation">
+Signal dimensionality refers to independent coordinates, not to how many axes are drawn on a graph.
+</NoteBlock>
+
+## 2. From physical process to digital data
+
+<div class="eyebrow">Slide 4 · Recording 10:35–20:05</div>
+
+**physical process → sensor → sampling → quantization → digital signal**
+
+For uniform temporal sampling:
+
+$$
+x[n]=x(nT_s),\qquad f_s=\frac{1}{T_s}
+$$
+
+Quantization maps each sample to one of a finite number of levels:
+
+$$
+L=2^b
+$$
+
+**Sampling** decides where or when a value is kept. **Quantization** decides which numerical level represents it.
+
+<NoteBlock type="blackboard" title="Blackboard example — 3-bit quantization">
+Eight levels can be encoded with three bits, from 000 to 111.
+</NoteBlock>
+
+## 3. One-dimensional signals
+
+<div class="eyebrow">Slide 5 · Recording 20:05–26:30</div>
+
+### ECG
+
+An ECG is a signal over time. The P wave, QRS complex, and T wave illustrate that different parts of a waveform can carry useful structure.
+
+### Speech
+
+A microphone converts changing sound pressure into a time-dependent signal.
+
+A conceptual recognition pipeline is:
+
+**segment speech → recognize sound units → combine them into words**
+
+## 4. Two-dimensional and multiband signals
+
+<div class="eyebrow">Slides 6–7 · Recording 26:30–35:35</div>
+
+A binary image needs only two pixel values. A 10-bit grayscale image can represent:
+
+$$
+2^{10}=1024
+$$
+
+levels.
+
+An RGB image stores three color channels per pixel. A multispectral image may contain more spectral bands, including wavelengths outside the visible range.
+
+<NoteBlock type="explanation">
+A multiband image can be represented as an $H\times W\times B$ array. The image still has two spatial coordinates; $B$ indexes spectral channels.
+</NoteBlock>
+
+A video adds time:
+
+$$
+I(x,y,t)
+$$
+
+## 5. What machine learning means
+
+<div class="eyebrow">Slide 8 · Recording 37:15–41:20</div>
+
+Machine learning fits models from data so that a computer can make predictions or decisions.
+
+Training adjusts model parameters using examples. Data quality and availability therefore directly affect what can be learned.
+
+<NoteBlock type="explanation">
+Automatic learning does not imply that a deployed model continuously retrains itself. Training and evaluation remain separate design decisions.
+</NoteBlock>
+
+## 6. Supervised learning
+
+<div class="eyebrow">Slide 8 · Recording 41:20–50:40</div>
+
+A supervised training set contains labeled examples:
+
+$$
+\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^{N}
+$$
+
+A classifier partitions feature space into **decision regions** separated by **decision boundaries**.
+
+<NoteBlock type="blackboard" title="Blackboard example — feature space">
+Two measurements can place every example at one point in a two-dimensional feature space. Labeled examples guide the model in learning a boundary between classes.
+</NoteBlock>
+
+## 7. Unsupervised learning
+
+<div class="eyebrow">Slide 8 · Recording 51:25–56:00</div>
+
+Unsupervised learning works with inputs without provided target labels.
+
+**Clustering** searches for groups based on similarity or structure.
+
+<NoteBlock type="blackboard" title="Blackboard example — clustering">
+The lecturer groups unlabeled points by similarity and mentions k-means. A cluster identifier does not automatically correspond to a semantic class name.
+</NoteBlock>
+
+## 8. Semi-supervised, active, and reinforcement learning
+
+<div class="eyebrow">Slide 9 · Recording 56:00–65:30</div>
+
+### Semi-supervised learning
+
+Uses a small labeled set together with a larger unlabeled set.
+
+### Active learning
+
+The learner chooses which examples should be labeled by an expert.
+
+<NoteBlock type="blackboard" title="Blackboard example — active learning loop">
+Train on a small labeled set, find informative unlabeled examples, request their labels, add them to the training set, and retrain.
+</NoteBlock>
+
+### Reinforcement learning
+
+An agent interacts with an environment, takes actions, receives rewards or penalties, and aims to maximize cumulative reward.
+
+## 9. Classification tasks
+
+<div class="eyebrow">Slide 10 · Recording 65:30–69:30</div>
+
+| Task | Output |
+| --- | --- |
+| Binary classification | One of two classes |
+| Multiclass classification | One class from several possibilities |
+| Multilabel classification | Several labels at once |
+
+<NoteBlock type="definition">
+Multiclass means choose one of many. Multilabel means choose all that apply.
+</NoteBlock>
+
+## 10. Captioning, regression, and ranking
+
+<div class="eyebrow">Slide 11 · Recording 69:30–73:40</div>
+
+| Task | Output |
+| --- | --- |
+| Captioning | Natural-language description |
+| Regression | Continuous numerical value |
+| Ranking | Ordered list of items |
+
+## Check your understanding
+
+1. Why is temperature versus time a 1D signal?
+2. Why does sampling alone not fully digitize amplitude?
+3. How many levels can 3, 8, and 10 bits represent?
+4. How do multiclass and multilabel classification differ?
+5. How does reinforcement feedback differ from a supervised label?
+
+</BaseLayout>
