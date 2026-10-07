@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Machine Learning · UniTrento">
+  <div class="eyebrow">Machine Learning · Artificial Intelligence Systems</div>
+  <h1>Machine Learning</h1>
+  <p class="lede">Course notebook organized first by module and then by professor, while keeping each lecture as a separate readable notebook page.</p>
+
+  <h2>Modules</h2>
+  <div class="class-grid">
+    <a class="class-card" href={`${base}machine-learning/module-1/`}>
+      <div class="card-kicker">Current</div>
+      <h3>Module 1</h3>
+      <p>Farid Melgani and Andrea Passerini.</p>
+    </a>
+    <a class="class-card" href={`${base}machine-learning/module-2/`}>
+      <div class="card-kicker">Later this semester</div>
+      <h3>Module 2</h3>
+      <p>Reserved for the second course module.</p>
+    </a>
+  </div>
+</BaseLayout>
