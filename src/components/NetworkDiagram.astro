@@ -1,0 +1,42 @@
+---
+const { variant = 'chain' } = Astro.props;
+---
+<div class="network" aria-label="Bayesian network diagram">
+  {variant === 'medical' && (
+    <svg viewBox="0 0 680 240" role="img">
+      <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#a1)">
+        <path d="M125 55 L245 160"/><path d="M125 55 L370 160"/><path d="M555 55 L245 160"/><path d="M555 55 L370 160"/><path d="M555 55 L555 160"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2">
+        <rect x="65" y="25" width="120" height="48" rx="12"/><rect x="495" y="25" width="120" height="48" rx="12"/>
+        <rect x="190" y="160" width="110" height="48" rx="12"/><rect x="315" y="160" width="110" height="48" rx="12"/><rect x="500" y="160" width="110" height="48" rx="12"/>
+      </g>
+      <g font-family="Poppins, sans-serif" font-size="16" text-anchor="middle" fill="currentColor">
+        <text x="125" y="55">Influenza</text><text x="555" y="55">Pneumonia</text><text x="245" y="190">Fever</text><text x="370" y="190">Cough</text><text x="555" y="190">Lab test</text>
+      </g>
+    </svg>
+  )}
+  {variant === 'collider' && (
+    <svg viewBox="0 0 680 230" role="img">
+      <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#a2)">
+        <path d="M145 60 L310 125"/><path d="M535 60 L370 125"/><path d="M340 150 L340 198"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2">
+        <rect x="75" y="30" width="140" height="48" rx="12"/><rect x="465" y="30" width="140" height="48" rx="12"/><rect x="275" y="110" width="130" height="48" rx="12"/><rect x="270" y="190" width="140" height="34" rx="12"/>
+      </g>
+      <g font-family="Poppins, sans-serif" font-size="15" text-anchor="middle" fill="currentColor">
+        <text x="145" y="60">Burglary</text><text x="535" y="60">Earthquake</text><text x="340" y="140">Alarm</text><text x="340" y="213">Phone call</text>
+      </g>
+    </svg>
+  )}
+  {variant === 'chain' && (
+    <svg viewBox="0 0 680 130" role="img">
+      <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#a3)"><path d="M190 65 L290 65"/><path d="M390 65 L490 65"/></g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2"><rect x="70" y="40" width="120" height="48" rx="12"/><rect x="290" y="40" width="100" height="48" rx="12"/><rect x="490" y="40" width="120" height="48" rx="12"/></g>
+      <g font-family="Poppins, sans-serif" font-size="16" text-anchor="middle" fill="currentColor"><text x="130" y="70">Cloudy</text><text x="340" y="70">Rainy</text><text x="550" y="70">Wet</text></g>
+    </svg>
+  )}
+</div>
