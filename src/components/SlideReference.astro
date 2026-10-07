@@ -1,0 +1,18 @@
+---
+const { src, page, to = null, label = null } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const pdfUrl = `${base}${src.replace(/^\//, '')}`;
+const display = label || (to ? `Slides ${page}–${to}` : `Slide ${page}`);
+---
+
+<a
+  class="slide-reference no-print"
+  href={`${pdfUrl}#page=${page}`}
+  target="_blank"
+  rel="noreferrer"
+  data-slide-page={String(page)}
+  data-slide-label={display}
+>
+  <span>{display}</span>
+  <span class="slide-reference-arrow" aria-hidden="true">↗</span>
+</a>
