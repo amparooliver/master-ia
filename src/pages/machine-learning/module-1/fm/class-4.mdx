@@ -1,0 +1,205 @@
+---
+title: "Class 4 — Feature Reduction"
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../../components/NoteBlock.astro';
+import SlideDeck from '../../../../components/SlideDeck.astro';
+import SlideReference from '../../../../components/SlideReference.astro';
+
+<BaseLayout title="Class 4 — Feature Reduction · F.M.">
+<div class="eyebrow">Machine Learning · Module 1 · F.M.</div>
+
+# Class 4 — Feature Reduction
+
+These notes cover the currently recorded parts of Chapter 3: motivation for dimensionality reduction, the Hughes effect, selection versus transformation, and feature-subset scoring.
+
+<SlideDeck src="slides/machine-learning/module-1/fm/chapter-3.pdf" title="Chapter 3 slides" />
+
+## Essential summary
+
+- More features can improve class separation, but only when there is enough data to estimate the larger model reliably.
+- High-dimensional spaces become sparse quickly.
+- The Hughes effect describes the degradation that can occur when dimensionality grows while the training sample remains limited.
+- Feature selection keeps original variables; feature transformation creates new variables.
+- Subset selection requires both a scoring criterion and a search strategy.
+- Filter, wrapper, and embedded methods differ in how feature selection relates to model training.
+
+## 1. Why reduce features?
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-3.pdf" page={2} to={6} /></div>
+
+Adding a useful feature can separate classes that overlap in a lower-dimensional representation.
+
+However, more dimensions also increase the amount of data needed to estimate class structure reliably.
+
+Feature reduction aims to:
+- reduce computation and storage
+- remove irrelevant or redundant variables
+- improve robustness with limited training data
+- make models easier to interpret
+
+<NoteBlock type="explanation">
+More information is not automatically harmful. The problem appears when model dimensionality grows faster than the amount and quality of data available to estimate that structure.
+</NoteBlock>
+
+## 2. Hughes effect and high-dimensional geometry
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-3.pdf" page={8} to={11} /></div>
+
+As dimensionality increases, the volume of the feature space grows rapidly and a fixed dataset becomes increasingly sparse.
+
+This creates a finite-sample trade-off: initially, adding informative features can improve accuracy, but after some point estimation error can dominate.
+
+That behavior is commonly referred to as the **Hughes effect**.
+
+<NoteBlock type="definition" title="Simplified definition — Hughes effect">
+With a fixed number of training samples, classification performance can first improve and then degrade as the number of features keeps increasing.
+</NoteBlock>
+
+<NoteBlock type="connection">
+The issue is not dimensionality alone. It is the interaction between dimensionality, sample size, model complexity, and the true information content of the added features.
+</NoteBlock>
+
+## 3. Feature selection versus transformation
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-3.pdf" page={12} /></div>
+
+### Feature selection
+
+Choose a subset of the original variables:
+
+$$
+(x_1,x_2,x_3,x_4)\longmapsto(x_1,x_3)
+$$
+
+### Feature transformation
+
+Construct new variables from the original ones:
+
+$$
+(x_1,x_2,x_3,x_4)\longmapsto(y_1,y_2)
+$$
+
+For example:
+
+$$
+y_1=x_1+x_2,
+\qquad
+y_2=x_3-x_4
+$$
+
+<NoteBlock type="definition">
+Selection preserves original coordinates. Transformation creates a new representation.
+</NoteBlock>
+
+<NoteBlock type="explanation">
+A transformed representation can reduce the number of classifier inputs while still requiring all original measurements to be computed first. Selection and transformation therefore do not always reduce acquisition cost in the same way.
+</NoteBlock>
+
+## 4. Feature subset objective
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-3.pdf" page={13} /></div>
+
+Let:
+
+$$
+F=\{x_1,\ldots,x_n\}
+$$
+
+and suppose we want to retain $m<n$ features. Then:
+
+$$
+F^*
+=
+\underset{F'\subset F,\ |F'|=m}
+{\operatorname{arg\,max}}
+\;J(F')
+$$
+
+The score $J(F')$ measures how useful a proposed subset is for distinguishing the classes.
+
+<NoteBlock type="explanation">
+The result of arg max is the feature subset that achieves the best score, not the score value itself.
+</NoteBlock>
+
+## 5. Search strategies
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-3.pdf" page={14} /></div>
+
+Feature selection needs:
+1. a **score** for candidate subsets
+2. a **search strategy** for deciding which subsets to evaluate
+
+The number of subsets grows rapidly:
+
+$$
+\binom{n}{m}=\frac{n!}{m!(n-m)!}
+$$
+
+Sequential forward selection adds features one at a time. Sequential backward selection starts with all features and removes them one at a time.
+
+<NoteBlock type="explanation">
+These strategies are computationally cheaper than exhaustive search but are heuristic and need not find the globally optimal subset.
+</NoteBlock>
+
+## 6. Separability measures
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-3.pdf" page={15} /></div>
+
+A subset can be scored using:
+- classifier accuracy
+- an estimate related to Bayes error
+- divergence
+- Bhattacharyya distance
+- Jeffries–Matusita distance
+
+For two class-conditional densities, overlap can be written as:
+
+$$
+O
+=
+\int
+\min\{
+p(x\mid\omega_1),
+p(x\mid\omega_2)
+\}\,dx
+$$
+
+With equal priors and equal misclassification costs, Bayes error is $O/2$.
+
+<NoteBlock type="explanation">
+Overlap and separation move in opposite directions: more overlap generally means lower separability.
+</NoteBlock>
+
+## 7. Filter, wrapper, and embedded selection
+
+### Filter
+
+Scores features or subsets without repeatedly fitting the final classifier.
+
+### Wrapper
+
+Fits and evaluates the intended classifier for candidate subsets.
+
+### Embedded
+
+Feature selection happens as part of model training itself.
+
+<NoteBlock type="example">
+An L1-regularized linear model can drive some coefficients to zero, effectively selecting a subset of input variables during training.
+</NoteBlock>
+
+<NoteBlock type="connection">
+Filter/wrapper/embedded describe **where selection happens** relative to training. Forward/backward selection describe a **search direction**. These are different classifications.
+</NoteBlock>
+
+## Check your understanding
+
+1. Why can an additional feature improve classification in one setting but hurt it in another?
+2. What causes the Hughes effect?
+3. How does feature selection differ from feature transformation?
+4. What does $J(F')$ represent?
+5. Why is subset search necessary?
+6. How do filter, wrapper, and embedded methods differ?
+
+</BaseLayout>
