@@ -1,20 +1,27 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
 ---
 <BaseLayout title="F.M. · Machine Learning">
   <div class="eyebrow">Machine Learning · Module 1</div>
   <h1>F.M.</h1>
-  <p class="lede">Instructor section for the earlier Module 1 lectures. Existing notes will be migrated here class by class without mixing them with A.P.’s sequence.</p>
+  <p class="lede">Instructor section for the earlier Module 1 lectures.</p>
 
   <h2>Official course resources</h2>
   <section class="resource-card">
     <h3>UniTrento Moodle</h3>
-    <p>Recordings and slides for Farid’s classes.</p>
+    <p>Recordings and slides for F.M.'s classes.</p>
     <div class="card-actions">
       <a class="resource-link" target="_blank" rel="noreferrer" href="https://didatticaonline.unitn.it/dol/course/view.php?id=44129">Open Moodle</a>
     </div>
   </section>
 
   <h2>Classes</h2>
-  <p>The lecture pages will be added here as the existing Farid notes are migrated.</p>
+  <div class="class-grid">
+    <a class="class-card" href={`${base}machine-learning/module-1/fm/class-1/`}>
+      <div class="card-kicker">Class 1</div>
+      <h3>Basic Concepts and Signal Acquisition</h3>
+      <p>Signals, digitization, image representations, and core machine-learning paradigms.</p>
+    </a>
+  </div>
 </BaseLayout>
