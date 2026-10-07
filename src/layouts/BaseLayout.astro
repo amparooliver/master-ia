@@ -5,15 +5,11 @@ const { title = 'UniTrento Master in AI', description = 'Study notebook for the 
 const base = import.meta.env.BASE_URL;
 const current = Astro.url.pathname;
 const navItems = [
-  { href: `${base}`, label: 'Master overview', detail: 'Artificial Intelligence Systems' },
-  { href: `${base}machine-learning/`, label: 'Machine Learning', detail: 'Course overview' },
-  { href: `${base}machine-learning/module-1/`, label: 'Machine Learning · Module 1', detail: 'Current module' },
-  { href: `${base}machine-learning/module-1/ap/class-1/`, label: 'Class 1 — Bayesian Networks', detail: 'A.P. · Machine Learning' },
-  { href: `${base}machine-learning/module-1/ap/class-2/`, label: 'Class 2 — Learning in Graphical Models', detail: 'A.P. · Machine Learning' },
-  { href: `${base}machine-learning/module-1/fm/`, label: 'F.M.', detail: 'Machine Learning · Module 1' },
-  { href: `${base}machine-learning/module-2/`, label: 'Machine Learning · Module 2', detail: 'Later this semester' },
-  { href: '#', label: 'A.P. slides & handouts', detail: 'External resource' },
-  { href: 'https://didatticaonline.unitn.it/dol/course/view.php?id=44129', label: 'Farid Moodle', detail: 'Recordings & slides' },
+  {
+    href: 'https://didatticaonline.unitn.it/dol/course/view.php?id=44129',
+    label: 'F.M. Moodle',
+    detail: 'Recordings & slides'
+  },
 ];
 ---
 <!doctype html>
@@ -65,7 +61,7 @@ const navItems = [
 
   <div class="quick-search no-print" id="quick-search" aria-hidden="true">
     <div class="search-panel">
-      <input id="search-input" placeholder="Search courses, classes and resources…" autocomplete="off" />
+      <input id="search-input" placeholder="Search external resources…" autocomplete="off" />
       <div class="search-results" id="search-results"></div>
     </div>
   </div>
@@ -80,7 +76,7 @@ const navItems = [
     const render = (query = '') => {
       const q = query.trim().toLowerCase();
       const items = navItems.filter(i => `${i.label} ${i.detail}`.toLowerCase().includes(q));
-      results.innerHTML = items.map(i => `<a class="search-item" href="${i.href}"><strong>${escapeHtml(i.label)}</strong><small>${escapeHtml(i.detail)}</small></a>`).join('') || '<div class="search-item">No matches</div>';
+      results.innerHTML = items.map(i => `<a class="search-item" href="${i.href}" target="_blank" rel="noreferrer"><strong>${escapeHtml(i.label)}</strong><small>${escapeHtml(i.detail)}</small></a>`).join('') || '<div class="search-item">No matches</div>';
     };
     const open = () => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); render(); setTimeout(() => input.focus(), 0); };
     const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); };
