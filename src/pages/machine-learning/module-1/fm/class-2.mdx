@@ -1,0 +1,164 @@
+---
+title: "Class 2 — ML Systems and Fish Classification"
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../../components/NoteBlock.astro';
+import SlideDeck from '../../../../components/SlideDeck.astro';
+import SlideReference from '../../../../components/SlideReference.astro';
+
+<BaseLayout title="Class 2 — ML Systems and Fish Classification · F.M.">
+<div class="eyebrow">Machine Learning · Module 1 · F.M.</div>
+
+# Class 2 — ML Systems and Fish Classification
+
+This lecture develops the structure of a complete machine-learning system and uses the fish-packing example to connect data acquisition, features, model choice, evaluation, and overfitting.
+
+<SlideDeck src="slides/machine-learning/module-1/fm/chapter-1.pdf" title="Chapter 1 slides" />
+
+## Essential summary
+
+- A machine-learning system can include acquisition, preprocessing, feature extraction, classification, post-processing, and decision stages.
+- System design is iterative rather than a one-pass pipeline.
+- Representative training data matters as much as dataset size.
+- Feature choice, model complexity, and cost functions determine what the classifier learns.
+- Strong training performance does not guarantee generalization.
+- The fish example shows how one-dimensional and two-dimensional decision boundaries behave.
+- A highly flexible model may overfit noise and labeling errors.
+
+## 1. Components of an ML system
+
+<div class="section-source"><div class="eyebrow">Recording 01:45–41:10</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={12} /></div>
+
+A typical pipeline is:
+
+**physical world → acquisition → preprocessing → feature extraction → classification/recognition → post-processing → decision**
+
+### Acquisition
+
+Sensors convert physical information into processable signals. Resolution, bandwidth, sensitivity, noise, and distortion determine what information is available downstream.
+
+### Preprocessing
+
+Preprocessing prepares the acquired signal. Examples include filtering, histogram adjustment, and foreground/background segmentation.
+
+<NoteBlock type="explanation">
+Low-level segmentation groups pixels or separates foreground from background. It does not necessarily assign semantic class labels.
+</NoteBlock>
+
+### Feature extraction
+
+Feature extraction converts raw data into measurements useful for the task. Examples include geometric, spectral, texture, histogram-based, and transform-domain features.
+
+A useful feature representation should be discriminative while avoiding unnecessary computation.
+
+<NoteBlock type="connection">
+The same operation can sometimes be viewed as preprocessing or feature extraction depending on its role. For example, a Fourier transform may prepare a signal, while selected Fourier coefficients may become features.
+</NoteBlock>
+
+### Classification and post-processing
+
+A classifier maps an input or feature vector to a predefined output class.
+
+Post-processing acts on classifier outputs. For spatial predictions, neighborhood information can suppress isolated errors, although smoothing can also remove genuine small structures.
+
+<NoteBlock type="explanation">
+Spatial context can be added after classification through post-processing, or modeled directly inside a joint model. Those are different design choices.
+</NoteBlock>
+
+## 2. Designing a supervised ML system
+
+<div class="section-source"><div class="eyebrow">Recording 41:10–62:20</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={13} /></div>
+
+The design cycle is:
+
+**collect data → select features → choose model → train → evaluate → revise**
+
+### Representative data
+
+Training examples should cover the variation expected at deployment time. Missing an important mode of a class can distort the learned distribution even if many examples are available.
+
+<NoteBlock type="blackboard" title="Blackboard example — missing class modes">
+If a tree species appears green, yellow, and red across seasons but training data contains only green examples, the learned class distribution will be too narrow. More green examples do not fix the missing seasonal coverage.
+</NoteBlock>
+
+### Training and evaluation
+
+Training estimates model parameters using labeled examples and a cost function.
+
+The objective is not merely low training error but good performance on unseen data.
+
+<NoteBlock type="explanation">
+Validation data is used during model development; an untouched test set should be reserved for the final performance estimate.
+</NoteBlock>
+
+## 3. Fish-packing plant example
+
+<div class="section-source"><div class="eyebrow">Recording 62:20–106:50</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={14} to={20} /></div>
+
+The task is to automatically separate **salmon** from **sea bass** using images.
+
+### Data collection and imaging
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={14} /></div>
+
+The system uses a conveyor belt, a camera, and a routing mechanism. Before modeling, inspect whether lighting, contrast, and candidate measurements are suitable.
+
+### Length as a feature
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={15} to={16} /></div>
+
+After foreground segmentation, measure fish length and estimate class-conditional distributions:
+
+$$
+p(x\mid \text{salmon}),\qquad p(x\mid \text{sea bass})
+$$
+
+Their overlap shows where length alone gives ambiguous evidence.
+
+<NoteBlock type="explanation">
+A normalized histogram can approximate a density. Raw histogram counts are frequencies, not probabilities by themselves.
+</NoteBlock>
+
+### Lightness and a threshold classifier
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={17} /></div>
+
+If lightness separates the classes better, a one-dimensional classifier can use a threshold $T$.
+
+Moving $T$ changes which examples are misclassified. The best threshold depends on both class distributions and the chosen error costs.
+
+<NoteBlock type="connection">
+If one type of mistake is more expensive than another, minimizing total error count is not necessarily the correct business objective.
+</NoteBlock>
+
+### Two features and a linear boundary
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={18} to={19} /></div>
+
+Using lightness and fish width gives a two-dimensional feature space. Each fish becomes a point $(x_1,x_2)$.
+
+A linear classifier uses a straight decision boundary whose parameters are estimated from labeled examples.
+
+### Nonlinear boundary and overfitting
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={20} /></div>
+
+A highly flexible nonlinear boundary can classify every training example correctly while performing worse on unseen examples.
+
+This is **overfitting**: fitting accidental details of the training set rather than the general structure of the task.
+
+<NoteBlock type="definition" title="Simplified definition — overfitting">
+A model overfits when it learns training-specific noise or peculiarities so well that its performance on new data deteriorates.
+</NoteBlock>
+
+Noise can come from incorrect labels or unreliable measurements such as changes in lighting.
+
+## Check your understanding
+
+1. Why is preprocessing different from feature extraction?
+2. Why can more training samples still fail to fix an unrepresentative dataset?
+3. What does the overlap of two class-conditional distributions mean?
+4. Why can unequal error costs move a decision threshold?
+5. Why is 100% training accuracy not sufficient evidence of a good classifier?
+
+</BaseLayout>
