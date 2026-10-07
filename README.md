@@ -1,22 +1,8 @@
 # unitn-master-ia
 
-A GitHub Pages-ready digital study notebook for the **Artificial Intelligence Systems** master's at the **Università di Trento**.
+A GitHub Pages-ready digital study notebook for the **Artificial Intelligence Systems** master.
 
-The repository is designed to grow across the whole master's degree. At the moment it contains only **Machine Learning**, while the architecture is intentionally course-agnostic so Foundations of AI and future courses can be added later without redesigning the site.
-
-## Current structure
-
-- Master overview
-  - Machine Learning
-    - Module 1
-      - A.P.
-        - Class 1 — Bayesian Networks
-        - Class 2 — Learning in Graphical Models
-      - F.M.
-        - Moodle recordings & slides
-        - Lecture-note migration area
-    - Module 2
-      - Reserved for later this semester
+The repository is designed to grow across the whole master's degree.
 
 ## Design goals
 
@@ -45,22 +31,6 @@ npm run dev
 npm run build
 npm run preview
 ```
-
-## Deploy to GitHub Pages
-
-The repository contains `.github/workflows/deploy.yml`.
-
-1. Push the repository to GitHub as `unitn-master-ia`.
-2. Open **Settings → Pages**.
-3. Set **Build and deployment → Source** to **GitHub Actions** if GitHub has not already selected it.
-4. Pushes to `main` build and deploy automatically.
-
-The workflow automatically sets Astro's base path to `/unitn-master-ia`, so the project Pages URL works without hard-coded internal paths.
-
-## Current Machine Learning resources
-
-- A.P. — official class materials and recordings are kept in the private course platforms.
-- F.M. — Moodle recordings & slides: https://didatticaonline.unitn.it/dol/course/view.php?id=44129
 
 ## Content convention
 
