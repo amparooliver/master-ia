@@ -1,9 +1,58 @@
 ---
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
+
 const { title = 'UniTrento Master in AI', description = 'Study notebook for the UniTrento Master in Artificial Intelligence' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const current = Astro.url.pathname;
+
+const normalizePath = (path) => path.replace(/\/+$/, '') || '/';
+const currentPath = normalizePath(current);
+const hrefFor = (path = '') => `${base}${path}`;
+const isActive = (href) => currentPath === normalizePath(href);
+const isWithin = (href) => currentPath === normalizePath(href) || currentPath.startsWith(`${normalizePath(href)}/`);
+
+const navigation = [
+  {
+    id: 'machine-learning',
+    label: 'Machine Learning',
+    href: hrefFor('machine-learning/'),
+    modules: [
+      {
+        id: 'ml-module-1',
+        label: 'Module 1',
+        href: hrefFor('machine-learning/module-1/'),
+        instructors: [
+          {
+            id: 'ml-module-1-ap',
+            label: 'A.P.',
+            href: hrefFor('machine-learning/module-1/ap/'),
+            classes: [
+              { label: 'Class 1 — Bayesian Networks', href: hrefFor('machine-learning/module-1/ap/class-1/') },
+              { label: 'Class 2 — Learning in Graphical Models', href: hrefFor('machine-learning/module-1/ap/class-2/') },
+            ],
+          },
+          {
+            id: 'ml-module-1-fm',
+            label: 'F.M.',
+            href: hrefFor('machine-learning/module-1/fm/'),
+            classes: [
+              { label: 'Notes overview', href: hrefFor('machine-learning/module-1/fm/') },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'ml-module-2',
+        label: 'Module 2',
+        href: hrefFor('machine-learning/module-2/'),
+        badge: 'Later',
+        instructors: [],
+      },
+    ],
+  },
+];
+
 const navItems = [
   {
     href: 'https://didatticaonline.unitn.it/dol/course/view.php?id=44129',
@@ -25,7 +74,14 @@ const navItems = [
   <header class="topbar no-print">
     <div class="topbar-inner">
       <div class="topbar-left">
-        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="true">
+        <button
+          class="sidebar-toggle"
+          id="sidebar-toggle"
+          aria-label="Hide navigation"
+          aria-expanded="true"
+          aria-controls="sidebar"
+          title="Hide navigation"
+        >
           <span></span><span></span><span></span>
         </button>
         <a class="brand" href={base}>UniTrento · Master in AI</a>
@@ -38,23 +94,120 @@ const navItems = [
   </header>
 
   <div class="layout" id="page-layout">
-    <aside class="sidebar no-print" id="sidebar">
-      <div class="nav-group">
-        <h3>Master</h3>
-        <a class={`nav-link ${current === base ? 'active' : ''}`} href={base}>Overview</a>
-      </div>
-      <div class="nav-group">
-        <h3>Machine Learning</h3>
-        <a class="nav-link" href={`${base}machine-learning/`}>Course overview</a>
-        <a class="nav-link" href={`${base}machine-learning/module-1/`}>Module 1</a>
-        <div class="nav-sub">
-          <a class="nav-link" href={`${base}machine-learning/module-1/ap/class-1/`}>A.P. · Class 1</a>
-          <a class="nav-link" href={`${base}machine-learning/module-1/ap/class-2/`}>A.P. · Class 2</a>
-          <a class="nav-link" href={`${base}machine-learning/module-1/fm/`}>F.M.</a>
+    <aside class="sidebar no-print" id="sidebar" aria-label="Notebook navigation">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-label">Master</div>
+          <a class={`nav-link nav-overview ${isActive(base) ? 'active' : ''}`} href={base} aria-current={isActive(base) ? 'page' : undefined}>
+            Overview
+          </a>
         </div>
-        <a class="nav-link" href={`${base}machine-learning/module-2/`}>Module 2 <span class="module-badge">Later</span></a>
-      </div>
+
+        <div class="nav-section">
+          <div class="nav-section-label">Courses</div>
+
+          {navigation.map((course) => {
+            const courseActive = isWithin(course.href);
+            return (
+              <details
+                class="nav-tree-group nav-course"
+                data-nav-key={course.id}
+                data-active-branch={courseActive ? 'true' : 'false'}
+                open={courseActive}
+              >
+                <summary>
+                  <span>{course.label}</span>
+                  <span class="nav-chevron" aria-hidden="true"></span>
+                </summary>
+
+                <div class="nav-tree-children">
+                  <a
+                    class={`nav-link ${isActive(course.href) ? 'active' : ''}`}
+                    href={course.href}
+                    aria-current={isActive(course.href) ? 'page' : undefined}
+                  >
+                    Course overview
+                  </a>
+
+                  {course.modules.map((module) => {
+                    const moduleActive = isWithin(module.href);
+                    const hasChildren = module.instructors.length > 0;
+
+                    if (!hasChildren) {
+                      return (
+                        <a
+                          class={`nav-link nav-module-link ${isActive(module.href) ? 'active' : ''}`}
+                          href={module.href}
+                          aria-current={isActive(module.href) ? 'page' : undefined}
+                        >
+                          <span>{module.label}</span>
+                          {module.badge && <span class="module-badge">{module.badge}</span>}
+                        </a>
+                      );
+                    }
+
+                    return (
+                      <details
+                        class="nav-tree-group nav-module"
+                        data-nav-key={module.id}
+                        data-active-branch={moduleActive ? 'true' : 'false'}
+                        open={moduleActive}
+                      >
+                        <summary>
+                          <span>{module.label}</span>
+                          <span class="nav-chevron" aria-hidden="true"></span>
+                        </summary>
+
+                        <div class="nav-tree-children">
+                          <a
+                            class={`nav-link ${isActive(module.href) ? 'active' : ''}`}
+                            href={module.href}
+                            aria-current={isActive(module.href) ? 'page' : undefined}
+                          >
+                            Module overview
+                          </a>
+
+                          {module.instructors.map((instructor) => {
+                            const instructorActive = isWithin(instructor.href);
+                            return (
+                              <details
+                                class="nav-tree-group nav-instructor"
+                                data-nav-key={instructor.id}
+                                data-active-branch={instructorActive ? 'true' : 'false'}
+                                open={instructorActive}
+                              >
+                                <summary>
+                                  <span>{instructor.label}</span>
+                                  <span class="nav-chevron" aria-hidden="true"></span>
+                                </summary>
+
+                                <div class="nav-tree-children nav-class-list">
+                                  {instructor.classes.map((classItem) => (
+                                    <a
+                                      class={`nav-link nav-class-link ${isActive(classItem.href) ? 'active' : ''}`}
+                                      href={classItem.href}
+                                      aria-current={isActive(classItem.href) ? 'page' : undefined}
+                                    >
+                                      {classItem.label}
+                                    </a>
+                                  ))}
+                                </div>
+                              </details>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    );
+                  })}
+                </div>
+              </details>
+            );
+          })}
+        </div>
+      </nav>
     </aside>
+
+    <button class="sidebar-backdrop no-print" id="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
 
     <main class="content-card"><slot /></main>
 
@@ -78,23 +231,96 @@ const navItems = [
     const results = $('#search-results');
     const trigger = $('#search-trigger');
     const sidebarToggle = $('#sidebar-toggle');
+    const sidebar = $('#sidebar');
+    const sidebarBackdrop = $('#sidebar-backdrop');
     const layout = $('#page-layout');
+    const mobileQuery = window.matchMedia('(max-width: 760px)');
 
-    const applySidebarState = (collapsed) => {
-      layout?.classList.toggle('sidebar-collapsed', collapsed);
-      sidebarToggle?.setAttribute('aria-expanded', String(!collapsed));
-      try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch {}
+    const setToggleState = (expanded) => {
+      sidebarToggle?.setAttribute('aria-expanded', String(expanded));
+      const label = expanded ? 'Hide navigation' : 'Show navigation';
+      sidebarToggle?.setAttribute('aria-label', label);
+      sidebarToggle?.setAttribute('title', label);
     };
 
-    let initialCollapsed = false;
-    try {
-      initialCollapsed = localStorage.getItem('sidebar-collapsed') === '1';
-    } catch {}
-    applySidebarState(initialCollapsed);
+    const setMobileDrawer = (open, { returnFocus = false } = {}) => {
+      layout?.classList.toggle('sidebar-open', open);
+      document.body.classList.toggle('nav-drawer-open', open);
+      if (sidebar) sidebar.inert = !open;
+      setToggleState(open);
+
+      if (open) {
+        const firstFocusable = sidebar?.querySelector('a, summary, button');
+        firstFocusable?.focus({ preventScroll: true });
+      } else if (returnFocus) {
+        sidebarToggle?.focus({ preventScroll: true });
+      }
+    };
+
+    const applyResponsiveSidebarState = () => {
+      if (mobileQuery.matches) {
+        layout?.classList.remove('sidebar-collapsed');
+        setMobileDrawer(false);
+        return;
+      }
+
+      layout?.classList.remove('sidebar-open');
+      document.body.classList.remove('nav-drawer-open');
+      if (sidebar) sidebar.inert = false;
+
+      let collapsed = false;
+      try {
+        collapsed = localStorage.getItem('sidebar-collapsed') === '1';
+      } catch {}
+
+      layout?.classList.toggle('sidebar-collapsed', collapsed);
+      setToggleState(!collapsed);
+    };
+
+    applyResponsiveSidebarState();
 
     sidebarToggle?.addEventListener('click', () => {
+      if (mobileQuery.matches) {
+        const open = layout?.classList.contains('sidebar-open') || false;
+        setMobileDrawer(!open, { returnFocus: open });
+        return;
+      }
+
       const collapsed = layout?.classList.contains('sidebar-collapsed') || false;
-      applySidebarState(!collapsed);
+      layout?.classList.toggle('sidebar-collapsed', !collapsed);
+      setToggleState(collapsed);
+      try {
+        localStorage.setItem('sidebar-collapsed', !collapsed ? '1' : '0');
+      } catch {}
+    });
+
+    sidebarBackdrop?.addEventListener('click', () => setMobileDrawer(false, { returnFocus: true }));
+
+    sidebar?.querySelectorAll('.nav-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (mobileQuery.matches) setMobileDrawer(false);
+      });
+    });
+
+    const handleViewportChange = () => applyResponsiveSidebarState();
+    mobileQuery.addEventListener?.('change', handleViewportChange);
+
+    document.querySelectorAll('.nav-tree-group[data-nav-key]').forEach((group) => {
+      const key = group.dataset.navKey;
+      const isActiveBranch = group.dataset.activeBranch === 'true';
+
+      if (!isActiveBranch) {
+        try {
+          const saved = localStorage.getItem(`nav-tree:${key}`);
+          if (saved !== null) group.open = saved === '1';
+        } catch {}
+      }
+
+      group.addEventListener('toggle', () => {
+        try {
+          localStorage.setItem(`nav-tree:${key}`, group.open ? '1' : '0');
+        } catch {}
+      });
     });
 
     const escapeHtml = (value) => value.replace(/[&<>'"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -103,25 +329,71 @@ const navItems = [
       const items = navItems.filter(i => `${i.label} ${i.detail}`.toLowerCase().includes(q));
       results.innerHTML = items.map(i => `<a class="search-item" href="${i.href}" target="_blank" rel="noreferrer"><strong>${escapeHtml(i.label)}</strong><small>${escapeHtml(i.detail)}</small></a>`).join('') || '<div class="search-item">No matches</div>';
     };
-    const open = () => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); render(); setTimeout(() => input.focus(), 0); };
-    const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); };
-    trigger?.addEventListener('click', open);
+
+    const openSearch = () => {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      render();
+      setTimeout(() => input.focus(), 0);
+    };
+
+    const closeSearch = () => {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+    };
+
+    trigger?.addEventListener('click', openSearch);
     input?.addEventListener('input', (e) => render(e.target.value));
-    overlay?.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-    document.addEventListener('keydown', (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); open(); }
-      if (e.key === 'Escape') close();
+    overlay?.addEventListener('click', (e) => {
+      if (e.target === overlay) closeSearch();
     });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+
+      if (e.key === 'Escape') {
+        if (overlay?.classList.contains('open')) {
+          closeSearch();
+        } else if (mobileQuery.matches && layout?.classList.contains('sidebar-open')) {
+          setMobileDrawer(false, { returnFocus: true });
+        }
+      }
+    });
+
     const toc = $('#toc-list');
     if (toc) {
-      [...document.querySelectorAll('main h2, main h3')].forEach((h, idx) => {
-        if (!h.id) h.id = `section-${idx + 1}`;
-        const a = document.createElement('a');
-        a.href = `#${h.id}`;
-        a.textContent = h.textContent;
-        if (h.tagName === 'H3') a.style.paddingLeft = '.7rem';
-        toc.appendChild(a);
+      const headings = [...document.querySelectorAll('main h2, main h3')];
+
+      headings.forEach((heading, idx) => {
+        if (!heading.id) heading.id = `section-${idx + 1}`;
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        link.dataset.target = heading.id;
+        if (heading.tagName === 'H3') link.classList.add('toc-subitem');
+        toc.appendChild(link);
       });
+
+      if (headings.length) {
+        const links = [...toc.querySelectorAll('a')];
+        const setActiveToc = (id) => {
+          links.forEach((link) => link.classList.toggle('active', link.dataset.target === id));
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+          if (visible[0]) setActiveToc(visible[0].target.id);
+        }, { rootMargin: '-96px 0px -70% 0px', threshold: [0, 1] });
+
+        headings.forEach((heading) => observer.observe(heading));
+        setActiveToc(headings[0].id);
+      }
     }
   </script>
 </body>
