@@ -1,0 +1,14 @@
+---
+const { type = 'explanation', title } = Astro.props;
+const labels = {
+  explanation: 'Further explanation',
+  definition: 'Simplified definition',
+  example: 'Example',
+  blackboard: 'Blackboard example',
+  connection: 'Useful connection',
+};
+---
+<div class={`note-block ${type}`}>
+  <div class="note-label">{title || labels[type] || 'Note'}</div>
+  <div><slot /></div>
+</div>
