@@ -24,7 +24,12 @@ const navItems = [
 <body>
   <header class="topbar no-print">
     <div class="topbar-inner">
-      <a class="brand" href={base}>UniTrento · Master in AI</a>
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="true">
+          <span></span><span></span><span></span>
+        </button>
+        <a class="brand" href={base}>UniTrento · Master in AI</a>
+      </div>
       <div class="top-actions">
         <button class="action-btn" id="search-trigger">Search</button>
         <button class="action-btn" onclick="window.print()">Export PDF</button>
@@ -32,8 +37,8 @@ const navItems = [
     </div>
   </header>
 
-  <div class="layout">
-    <aside class="sidebar no-print">
+  <div class="layout" id="page-layout">
+    <aside class="sidebar no-print" id="sidebar">
       <div class="nav-group">
         <h3>Master</h3>
         <a class={`nav-link ${current === base ? 'active' : ''}`} href={base}>Overview</a>
@@ -72,6 +77,26 @@ const navItems = [
     const input = $('#search-input');
     const results = $('#search-results');
     const trigger = $('#search-trigger');
+    const sidebarToggle = $('#sidebar-toggle');
+    const layout = $('#page-layout');
+
+    const applySidebarState = (collapsed) => {
+      layout?.classList.toggle('sidebar-collapsed', collapsed);
+      sidebarToggle?.setAttribute('aria-expanded', String(!collapsed));
+      try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch {}
+    };
+
+    let initialCollapsed = false;
+    try {
+      initialCollapsed = localStorage.getItem('sidebar-collapsed') === '1';
+    } catch {}
+    applySidebarState(initialCollapsed);
+
+    sidebarToggle?.addEventListener('click', () => {
+      const collapsed = layout?.classList.contains('sidebar-collapsed') || false;
+      applySidebarState(!collapsed);
+    });
+
     const escapeHtml = (value) => value.replace(/[&<>'"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
     const render = (query = '') => {
       const q = query.trim().toLowerCase();
