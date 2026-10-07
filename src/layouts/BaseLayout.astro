@@ -159,14 +159,6 @@ const navItems = [
                         </summary>
 
                         <div class="nav-tree-children">
-                          <a
-                            class={`nav-link ${isActive(module.href) ? 'active' : ''}`}
-                            href={module.href}
-                            aria-current={isActive(module.href) ? 'page' : undefined}
-                          >
-                            Module overview
-                          </a>
-
                           {module.instructors.map((instructor) => {
                             const instructorActive = isWithin(instructor.href);
                             return (
