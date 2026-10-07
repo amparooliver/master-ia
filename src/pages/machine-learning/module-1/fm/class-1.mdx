@@ -5,8 +5,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import NoteBlock from '../../../../components/NoteBlock.astro';
 import SlideDeck from '../../../../components/SlideDeck.astro';
 import SlideReference from '../../../../components/SlideReference.astro';
-
-const slideDeck = 'slides/machine-learning/module-1/fm/chapter-1.pdf';
+ 
 
 <BaseLayout title="Class 1 — Basic Concepts and Signal Acquisition · F.M.">
 <div class="eyebrow">Machine Learning · Module 1 · F.M.</div>
@@ -15,7 +14,7 @@ const slideDeck = 'slides/machine-learning/module-1/fm/chapter-1.pdf';
 
 This lecture introduces signals, digitization, image representations, and the main machine-learning paradigms.
 
-<SlideDeck src={slideDeck} title="Chapter 1 slides" />
+<SlideDeck src="slides/machine-learning/module-1/fm/chapter-1.pdf" title="Chapter 1 slides" />
 
 ## Essential summary
 
@@ -28,7 +27,7 @@ This lecture introduces signals, digitization, image representations, and the ma
 
 ## 1. Signals and dimensionality
 
-<div class="section-source"><div class="eyebrow">Recording 02:20–10:35</div><SlideReference src={slideDeck} page={3} /></div>
+<div class="section-source"><div class="eyebrow">Recording 02:20–10:35</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={3} /></div>
 
 A **signal** is a varying quantity that carries information about a phenomenon.
 
@@ -46,7 +45,7 @@ Signal dimensionality refers to independent coordinates, not to how many axes ar
 
 ## 2. From physical process to digital data
 
-<div class="section-source"><div class="eyebrow">Recording 10:35–20:05</div><SlideReference src={slideDeck} page={4} /></div>
+<div class="section-source"><div class="eyebrow">Recording 10:35–20:05</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={4} /></div>
 
 **physical process → sensor → sampling → quantization → digital signal**
 
@@ -70,7 +69,7 @@ Eight levels can be encoded with three bits, from 000 to 111.
 
 ## 3. One-dimensional signals
 
-<div class="section-source"><div class="eyebrow">Recording 20:05–26:30</div><SlideReference src={slideDeck} page={5} /></div>
+<div class="section-source"><div class="eyebrow">Recording 20:05–26:30</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={5} /></div>
 
 ### ECG
 
@@ -86,7 +85,7 @@ A conceptual recognition pipeline is:
 
 ## 4. Two-dimensional and multiband signals
 
-<div class="section-source"><div class="eyebrow">Recording 26:30–35:35</div><SlideReference src={slideDeck} page={6} to={7} /></div>
+<div class="section-source"><div class="eyebrow">Recording 26:30–35:35</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={6} to={7} /></div>
 
 A binary image needs only two pixel values. A 10-bit grayscale image can represent:
 
@@ -110,7 +109,7 @@ $$
 
 ## 5. What machine learning means
 
-<div class="section-source"><div class="eyebrow">Recording 37:15–41:20</div><SlideReference src={slideDeck} page={8} /></div>
+<div class="section-source"><div class="eyebrow">Recording 37:15–41:20</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={8} /></div>
 
 Machine learning fits models from data so that a computer can make predictions or decisions.
 
@@ -122,7 +121,7 @@ Automatic learning does not imply that a deployed model continuously retrains it
 
 ## 6. Supervised learning
 
-<div class="section-source"><div class="eyebrow">Recording 41:20–50:40</div><SlideReference src={slideDeck} page={8} /></div>
+<div class="section-source"><div class="eyebrow">Recording 41:20–50:40</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={8} /></div>
 
 A supervised training set contains labeled examples:
 
@@ -138,7 +137,7 @@ Two measurements can place every example at one point in a two-dimensional featu
 
 ## 7. Unsupervised learning
 
-<div class="section-source"><div class="eyebrow">Recording 51:25–56:00</div><SlideReference src={slideDeck} page={8} /></div>
+<div class="section-source"><div class="eyebrow">Recording 51:25–56:00</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={8} /></div>
 
 Unsupervised learning works with inputs without provided target labels.
 
@@ -150,7 +149,7 @@ The lecturer groups unlabeled points by similarity and mentions k-means. A clust
 
 ## 8. Semi-supervised, active, and reinforcement learning
 
-<div class="section-source"><div class="eyebrow">Recording 56:00–65:30</div><SlideReference src={slideDeck} page={9} /></div>
+<div class="section-source"><div class="eyebrow">Recording 56:00–65:30</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={9} /></div>
 
 ### Semi-supervised learning
 
@@ -170,7 +169,7 @@ An agent interacts with an environment, takes actions, receives rewards or penal
 
 ## 9. Classification tasks
 
-<div class="section-source"><div class="eyebrow">Recording 65:30–69:30</div><SlideReference src={slideDeck} page={10} /></div>
+<div class="section-source"><div class="eyebrow">Recording 65:30–69:30</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={10} /></div>
 
 | Task | Output |
 | --- | --- |
@@ -184,7 +183,7 @@ Multiclass means choose one of many. Multilabel means choose all that apply.
 
 ## 10. Captioning, regression, and ranking
 
-<div class="section-source"><div class="eyebrow">Recording 69:30–73:40</div><SlideReference src={slideDeck} page={11} /></div>
+<div class="section-source"><div class="eyebrow">Recording 69:30–73:40</div><SlideReference src="slides/machine-learning/module-1/fm/chapter-1.pdf" page={11} /></div>
 
 | Task | Output |
 | --- | --- |
