@@ -1,0 +1,66 @@
+---
+const { src, title = 'Lecture slides', pages = null } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const pdfUrl = `${base}${src.replace(/^\//, '')}`;
+---
+
+<section class="slide-deck-card no-print" data-slide-deck data-pdf={pdfUrl}>
+  <div class="slide-deck-copy">
+    <div class="slide-deck-kicker">Lecture material</div>
+    <h2>{title}</h2>
+    <p>{pages ? `${pages} pages · PDF` : 'Original PDF deck'}</p>
+  </div>
+  <div class="slide-deck-actions">
+    <button class="slide-deck-button primary" type="button" data-open-deck>Browse slides</button>
+    <a class="slide-deck-button" href={pdfUrl} target="_blank" rel="noreferrer">Open full PDF</a>
+  </div>
+</section>
+
+<dialog class="slide-dialog no-print" data-slide-dialog>
+  <div class="slide-dialog-shell">
+    <div class="slide-dialog-header">
+      <div>
+        <div class="slide-deck-kicker">Lecture slides</div>
+        <div class="slide-dialog-title" data-slide-dialog-title>{title}</div>
+      </div>
+      <div class="slide-dialog-actions">
+        <a class="slide-deck-button" data-open-external href={pdfUrl} target="_blank" rel="noreferrer">Open PDF</a>
+        <button class="slide-dialog-close" type="button" data-close-dialog aria-label="Close slide viewer">Close</button>
+      </div>
+    </div>
+    <iframe class="slide-frame" data-slide-frame title={title}></iframe>
+  </div>
+</dialog>
+
+<script>
+  const deck = document.querySelector('[data-slide-deck]');
+  const dialog = document.querySelector('[data-slide-dialog]');
+  const frame = dialog?.querySelector('[data-slide-frame]');
+  const title = dialog?.querySelector('[data-slide-dialog-title]');
+  const pdf = deck?.dataset.pdf;
+
+  const openViewer = (page, label) => {
+    if (!dialog || !frame || !pdf) return;
+    frame.src = page ? `${pdf}#page=${page}&view=FitH` : `${pdf}#view=FitH`;
+    if (title) title.textContent = label || 'Lecture slides';
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else window.open(frame.src, '_blank', 'noopener,noreferrer');
+  };
+
+  deck?.querySelector('[data-open-deck]')?.addEventListener('click', () => openViewer(null, 'Full lecture deck'));
+
+  document.querySelectorAll('[data-slide-page]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      openViewer(link.dataset.slidePage, link.dataset.slideLabel || link.textContent?.trim());
+    });
+  });
+
+  dialog?.querySelector('[data-close-dialog]')?.addEventListener('click', () => dialog.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog?.addEventListener('close', () => {
+    if (frame) frame.src = '';
+  });
+</script>
