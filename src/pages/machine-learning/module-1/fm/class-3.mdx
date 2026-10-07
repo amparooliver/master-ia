@@ -1,0 +1,181 @@
+---
+title: "Class 3 — Statistical Estimation Theory"
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../../components/NoteBlock.astro';
+import SlideDeck from '../../../../components/SlideDeck.astro';
+import SlideReference from '../../../../components/SlideReference.astro';
+
+<BaseLayout title="Class 3 — Statistical Estimation Theory · F.M.">
+<div class="eyebrow">Machine Learning · Module 1 · F.M.</div>
+
+# Class 3 — Statistical Estimation Theory
+
+These notes cover the currently recorded parts of Chapter 2: Parzen-window density estimation, Gaussian mixtures, and expectation–maximization.
+
+<SlideDeck src="slides/machine-learning/module-1/fm/chapter-2.pdf" title="Chapter 2 slides" />
+
+## Essential summary
+
+- Parzen windows estimate probability density locally from nearby samples.
+- Kernel width controls how local or smooth the estimate is.
+- A Gaussian mixture represents a density as a weighted sum of Gaussian components.
+- Component assignments are latent variables.
+- EM alternates between estimating responsibilities and updating model parameters.
+- The same EM principle can handle missing variables when the unobserved quantities are treated probabilistically.
+
+## 1. Parzen window density estimation
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-2.pdf" page={51} to={54} /></div>
+
+### Region and indicator window
+
+For a query point $x^*$, define a local region with side length $h$. In $n$ dimensions, its volume is:
+
+$$
+V=h^n
+$$
+
+An indicator window $gamma$ returns 1 for samples inside the region and 0 otherwise.
+
+### Counting nearby samples
+
+If $K$ of $N$ observations fall inside the region:
+
+$$
+K=\sum_{k=1}^{N}\gamma\!\left(\frac{x_k-x^*}{h}\right)
+$$
+
+and the density estimate is:
+
+$$
+\hat p(x^*)=\frac{K}{NV}
+=\frac{1}{Nh^n}\sum_{k=1}^{N}\gamma\!\left(\frac{x_k-x^*}{h}\right)
+$$
+
+<NoteBlock type="explanation">
+Dividing by $N$ converts the local count into a proportion. Dividing by the window volume converts that proportion into density per unit of space.
+</NoteBlock>
+
+### Smooth kernels
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-2.pdf" page={53} /></div>
+
+A smooth kernel replaces the hard in/out count with graded contributions:
+
+$$
+\hat p(x)=\frac{1}{N}\sum_{k=1}^{N}\frac{1}{V(h)}
+\gamma\!\left(\frac{x-x_k}{h}\right)
+$$
+
+Nearby observations can contribute more than distant ones.
+
+### Conditions for a valid density
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-2.pdf" page={54} /></div>
+
+A normalized nonnegative kernel satisfies:
+
+$$
+\gamma(u)\ge 0,
+\qquad
+\int_{\mathbb R^n}\gamma(u)\,du=1
+$$
+
+<NoteBlock type="definition">
+A probability density may exceed 1 at a point. What must equal 1 is the integral of the density over the full domain.
+</NoteBlock>
+
+## 2. Gaussian mixture models
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-2.pdf" page={68} to={69} /></div>
+
+A Gaussian mixture with $M$ components is:
+
+$$
+p(x)=\sum_{i=1}^{M}P_i\,\mathcal N(x\mid m_i,\Sigma_i)
+$$
+
+Each component has:
+- mixture weight $P_i$
+- mean $m_i$
+- covariance $\Sigma_i$
+
+The component that generated each observation is not observed directly. That hidden assignment is a **latent variable**.
+
+<NoteBlock type="connection">
+Too few mixture components can underfit structure; too many can overfit noise. The appropriate number depends on the data and model-selection procedure.
+</NoteBlock>
+
+## 3. Expectation–Maximization
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-2.pdf" page={76} /></div>
+
+EM alternates between estimating component memberships and updating parameters.
+
+### E step — responsibilities
+
+For sample $x_j$ and component $i$:
+
+$$
+r_{ji}^{(k)}
+=
+P(z_j=i\mid x_j,\theta^{(k)})
+=
+\frac{
+P_i^{(k)}\mathcal N(x_j\mid m_i^{(k)},\Sigma_i^{(k)})
+}{
+\sum_{\ell=1}^{M}
+P_\ell^{(k)}\mathcal N(x_j\mid m_\ell^{(k)},\Sigma_\ell^{(k)})
+}
+$$
+
+The responsibilities for one sample sum to 1.
+
+<NoteBlock type="blackboard" title="Blackboard example — soft membership">
+A sample may currently have responsibilities such as 0.6, 0.3, and 0.1 for three components. The sample is not physically split; these values express uncertainty about its generating component.
+</NoteBlock>
+
+### M step — parameter updates
+
+Define the effective membership count:
+
+$$
+N_i=\sum_{j=1}^{N}r_{ji}
+$$
+
+Then update:
+
+$$
+P_i=\frac{N_i}{N}
+$$
+
+$$
+m_i=\frac{1}{N_i}\sum_{j=1}^{N}r_{ji}x_j
+$$
+
+and the covariance by the corresponding responsibility-weighted second moment around the updated mean.
+
+<NoteBlock type="explanation">
+EM replaces unknown hard component assignments with their expected values under the current model, then re-estimates the model as if those fractional memberships were available.
+</NoteBlock>
+
+## 4. Missing-feature interpretation
+
+<div class="section-source"><SlideReference src="slides/machine-learning/module-1/fm/chapter-2.pdf" page={77} /></div>
+
+The same logic applies when part of an observation is missing. The unknown feature is treated as latent, and expectations under the current model replace unavailable quantities during parameter estimation.
+
+<NoteBlock type="connection">
+Gaussian mixtures and missing-feature estimation are both incomplete-data problems. EM provides a common framework because it alternates between estimating hidden information and updating parameters.
+</NoteBlock>
+
+## Check your understanding
+
+1. Why do Parzen estimates divide by both $N$ and the window volume?
+2. What is the role of kernel width $h$?
+3. Why are mixture assignments considered latent variables?
+4. What does a responsibility represent?
+5. Why does EM alternate instead of estimating everything in one direct step?
+
+</BaseLayout>
