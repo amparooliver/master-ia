@@ -1,7 +1,8 @@
 ---
 const { src, title = 'Lecture slides', pages = null } = Astro.props;
-const base = import.meta.env.BASE_URL;
-const pdfUrl = `${base}${src.replace(/^\//, '')}`;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+const pdfUrl = `${base}${src.replace(/^\/+/, '')}`;
 ---
 
 <section class="slide-deck-card no-print" data-slide-deck data-pdf={pdfUrl}>
