@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="UniTrento Master in AI · Study Notebook">
+  <div class="eyebrow">Università di Trento · Artificial Intelligence Systems · 2026–2028</div>
+  <h1>Master in Artificial Intelligence</h1>
+  <p class="lede">A structured digital notebook for the full master’s degree: courses, professors, lectures, formulas, diagrams, blackboard examples, further explanations, and printable study notes.</p>
+
+  <div class="meta-row">
+    <span class="meta-pill">Poppins</span>
+    <span class="meta-pill">KaTeX mathematics</span>
+    <span class="meta-pill">Print / PDF</span>
+    <span class="meta-pill">iPad-friendly</span>
+  </div>
+
+  <h2>Courses</h2>
+  <div class="course-grid">
+    <a class="course-card" href={`${base}machine-learning/`}>
+      <div class="card-kicker">Current course</div>
+      <h3>Machine Learning</h3>
+      <p>Module 1 notes organized by professor, with Module 2 already reserved.</p>
+      <div class="course-meta">Farid Melgani · Andrea Passerini</div>
+    </a>
+  </div>
+
+  <h2>Notebook convention</h2>
+  <p>Lecture and slide content appears normally. Study additions are explicitly labeled as <strong>Further explanation</strong>, <strong>Simplified definition</strong>, <strong>Example</strong>, <strong>Blackboard example</strong>, or <strong>Useful connection</strong>.</p>
+</BaseLayout>
