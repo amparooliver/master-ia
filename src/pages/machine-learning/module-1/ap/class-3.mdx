@@ -4,6 +4,7 @@ title: "Class 3 — Hugin Lite and Evidence in Bayesian Networks"
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import NoteBlock from '../../../../components/NoteBlock.astro';
 import SlideDeck from '../../../../components/SlideDeck.astro';
+import NetworkDiagram from '../../../../components/NetworkDiagram.astro';
 
 <BaseLayout title="Class 3 — Hugin Lite and Evidence in Bayesian Networks · A.P.">
 <div class="eyebrow">Machine Learning · Module 1 · A.P.</div>
@@ -268,12 +269,14 @@ $$
 
 The corresponding Bayesian network is:
 
-$$
+<NetworkDiagram variant="naive-bayes" />
+
+$
 Y\to X_1,\qquad
 Y\to X_2,\qquad
 \ldots,\qquad
 Y\to X_d
-$$
+$
 
 <NoteBlock type="definition" title="Simplified definition — why “Naive”?">
 The assumption is “naive” because it treats all features as independent from one another once the class label is known. Real features can still be correlated even within the same class.
@@ -376,6 +379,8 @@ and normalizes the two resulting class scores to obtain posterior probabilities.
 
 The lecturer then loaded a small binary **Asia** dataset.
 
+<NetworkDiagram variant="asia" />
+
 The variables mentioned were:
 
 - Visit to Asia?
@@ -406,6 +411,51 @@ Algorithms explicitly mentioned in Hugin included:
 
 <NoteBlock type="explanation">
 PC and NPC use conditional-independence information to constrain the graph. A greedy method instead searches candidate graph structures and keeps local changes that improve its scoring criterion.
+</NoteBlock>
+
+### What to pay attention to in structure learning
+
+- More data generally makes conditional-independence tests and structure scores more reliable.
+- Different algorithms can produce different graphs because they use different assumptions, tests, scores, and search procedures.
+- A learned edge is not automatically a causal claim.
+- Some edge directions cannot be distinguished from observational data alone because different DAGs can belong to the same **Markov-equivalence class**.
+- Domain knowledge can constrain impossible directions or relationships.
+
+<NoteBlock type="connection" title="Useful connection — Asia as a benchmark">
+The Asia / Chest Clinic network is small and interpretable, so it is useful for comparing a learned graph against a known reference and seeing which dependencies an algorithm recovers or misses.
+</NoteBlock>
+
+### After structure learning
+
+Once a graph has been selected, the next step is usually **parameter learning**: estimate the local CPTs or distributions from the dataset.
+
+After both structure and parameters are available, the learned Bayesian network can be used for inference just like the manually built networks from the first part of the lab.
+
+## 14. Prior distribution knowledge initialization
+
+Before parameter learning, the lecturer initialized the prior-distribution knowledge values to **1 for all states/configurations**.
+
+For a discrete state $k$:
+
+$
+\alpha_k=1
+$
+
+<NoteBlock type="definition" title="Simplified definition — what setting all priors to 1 means">
+A symmetric value of 1 acts like one pseudo-observation for every possible state. Before the dataset is considered, no state is favored over another.
+</NoteBlock>
+
+For discrete CPTs, the estimate then has the form:
+
+$
+P(X=x_k\mid U=u)
+=
+\frac{N_{u,k}+1}
+{\sum_j (N_{u,j}+1)}
+$
+
+<NoteBlock type="connection" title="Useful connection — Dirichlet priors and Laplace smoothing">
+These values behave like Dirichlet pseudo-counts and avoid exact zero probabilities for unseen configurations. This connects directly to the Dirichlet-prior parameter learning from Class 2.
 </NoteBlock>
 
 ## Check your understanding
