@@ -1,0 +1,429 @@
+---
+title: "Class 3 — Hugin Lite and Evidence in Bayesian Networks"
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../../components/NoteBlock.astro';
+import SlideDeck from '../../../../components/SlideDeck.astro';
+
+<BaseLayout title="Class 3 — Hugin Lite and Evidence in Bayesian Networks · A.P.">
+<div class="eyebrow">Machine Learning · Module 1 · A.P.</div>
+
+# Class 3 — Hugin Lite and Evidence in Bayesian Networks
+
+This class is a practical Hugin Lite lab covering Bayesian-network construction, evidence propagation, explaining away, Naive Bayes classification, and an introduction to structure learning.
+
+<SlideDeck src="slides/machine-learning/module-1/ap/BayesianLab.pdf" title="Bayesian lab slides" />
+
+## Essential summary
+
+- Hugin Lite can be used to construct Bayesian networks, edit local probability tables, enter evidence, and propagate beliefs.
+- The Earthquake–Burglary–Alarm example makes explaining away visible numerically.
+- Making a variable deterministic changes the model itself and propagates through connected variables.
+- A conditional joint query such as $P(A=T,B=T\mid C=T)$ can be computed from the joint probability divided by the probability of the evidence.
+- Continuous children with discrete parents can use a different Gaussian parameterization for each parent configuration.
+- Bayesian classification chooses the class with highest posterior probability.
+- Naive Bayes assumes features are conditionally independent given the class.
+- The Naive Bayes factorization is itself a Bayesian-network joint distribution.
+- The class ended with the Asia dataset and an introduction to structure-learning algorithms in Hugin.
+
+## 1. Building a network in Hugin Lite
+
+The lab workflow included:
+
+- adding nodes;
+- drawing directed arrows;
+- renaming variables;
+- defining **Yes/No** states;
+- opening the probability-table view;
+- entering or editing local probability values.
+
+The running network began with:
+
+$$
+Earthquake \to Alarm \leftarrow Burglary
+$$
+
+and was later extended with a **Phone Call** node.
+
+## 2. Editing probability tables
+
+A Bayesian-network graph specifies the dependency structure, but inference also needs local probability distributions.
+
+In Hugin, these are entered through each node's probability table.
+
+<NoteBlock type="connection">
+The graph and the probability tables play different roles: the graph specifies the factorization, while the tables provide the numerical parameters needed to evaluate it.
+</NoteBlock>
+
+## 3. Making Earthquake deterministic
+
+The lecturer temporarily edited the Earthquake distribution so that:
+
+$$
+P(Earthquake=Yes)=1
+$$
+
+This was used to inspect how certainty about one cause propagates through the model.
+
+After propagation, the probability of:
+
+$$
+Alarm=Yes
+$$
+
+became almost 100%.
+
+<NoteBlock type="explanation">
+This is not merely entering evidence about a random variable; editing the probability table to make a state deterministic changes the model's local distribution itself.
+</NoteBlock>
+
+## 4. Evidence and explaining away
+
+With:
+
+$$
+Earthquake \to Alarm \leftarrow Burglary
+$$
+
+Earthquake and Burglary are alternative causes of the same effect.
+
+Once:
+
+$$
+Alarm=Yes
+$$
+
+is observed, evidence supporting one cause can reduce the posterior need for the other cause.
+
+<NoteBlock type="definition" title="Simplified definition — explaining away">
+When two causes can explain the same observed effect, stronger evidence for one cause can make the other cause less probable.
+</NoteBlock>
+
+The Hugin interface makes this behavior visible by updating the displayed posterior probabilities whenever evidence changes.
+
+## 5. Adding Phone Call
+
+The network was extended with a **Phone Call** variable.
+
+The lecturer then made:
+
+$$
+PhoneCall=Yes
+$$
+
+deterministic and inspected how this changed probabilities elsewhere after propagation.
+
+This extends the same idea: changing certainty about one variable changes beliefs elsewhere according to the network structure.
+
+## 6. Propagation modes
+
+The lecturer also discussed Hugin's propagation modes.
+
+<NoteBlock type="explanation">
+The exact terminology from the live note is still uncertain. It sounded like a contrast involving **Max Normal** and the normal/sum propagation mode, so the public notes keep this point unresolved rather than silently inventing a label.
+</NoteBlock>
+
+## 7. Conditional joint probability
+
+The class worked with:
+
+$$
+P(A=T,B=T\mid C=T)
+$$
+
+By conditional probability:
+
+$$
+P(A=T,B=T\mid C=T)
+=
+\frac{P(A=T,B=T,C=T)}
+{P(C=T)}
+$$
+
+If the structure is:
+
+$$
+A\to C\leftarrow B
+$$
+
+and $A$ and $B$ are roots, then:
+
+$$
+P(A=T,B=T,C=T)
+=
+P(A=T)P(B=T)P(C=T\mid A=T,B=T)
+$$
+
+The evidence probability is found by marginalization:
+
+$$
+P(C=T)
+=
+\sum_a\sum_b P(a,b,C=T)
+$$
+
+and therefore:
+
+$$
+P(C=T)
+=
+\sum_a\sum_b
+P(a)P(b)P(C=T\mid a,b)
+$$
+
+<NoteBlock type="connection">
+This calculation is another view of explaining away: conditioning on the collider $C$ couples the two possible causes $A$ and $B$.
+</NoteBlock>
+
+## 8. Continuous variables with discrete parents
+
+For a continuous child $Y$ with a discrete parent $D$, a standard conditional Gaussian interpretation is:
+
+$$
+Y\mid D=d
+\sim
+\mathcal N(\mu_d,\sigma_d^2)
+$$
+
+Each discrete parent configuration selects its own Gaussian parameter set.
+
+With several discrete parents, there is one parameterization for each joint parent configuration.
+
+<NoteBlock type="explanation">
+If a continuous child also has continuous parents, a conditional-linear-Gaussian model can use a mean that is a linear function of those continuous parents, with parameters depending on the discrete-parent configuration.
+</NoteBlock>
+
+## 9. Bayesian classification
+
+Given feature vector $\mathbf{x}$ and class variable $Y$:
+
+$$
+\hat y
+=
+\arg\max_y P(Y=y\mid\mathbf{x})
+$$
+
+Using Bayes' rule:
+
+$$
+P(Y=y\mid\mathbf{x})
+=
+\frac{P(\mathbf{x}\mid Y=y)P(Y=y)}
+{P(\mathbf{x})}
+$$
+
+Since $P(\mathbf{x})$ is identical for every candidate class:
+
+$$
+\hat y
+=
+\arg\max_y
+P(\mathbf{x}\mid Y=y)P(Y=y)
+$$
+
+Here:
+
+- $P(Y=y)$ is the **class prior**;
+- $P(\mathbf{x}\mid Y=y)$ is the **class-conditional likelihood**.
+
+For a continuous vector, one possible model is:
+
+$$
+P(\mathbf{x}\mid Y=y)
+=
+\mathcal N(\mathbf{x};\mu_y,\Sigma_y)
+$$
+
+## 10. Naive Bayes
+
+Naive Bayes assumes that the features are conditionally independent once the class is known:
+
+$$
+P(\mathbf{x}\mid Y=y)
+=
+\prod_{j=1}^{d}
+P(X_j=x_j\mid Y=y)
+$$
+
+Therefore:
+
+$$
+\hat y
+=
+\arg\max_y
+P(Y=y)
+\prod_{j=1}^{d}
+P(X_j=x_j\mid Y=y)
+$$
+
+The lecturer emphasized that this product is the **joint probability** of the class and the observed features:
+
+$$
+P(Y=y,\mathbf X=\mathbf x)
+=
+P(Y=y)
+\prod_{j=1}^{d}
+P(X_j=x_j\mid Y=y)
+$$
+
+The corresponding Bayesian network is:
+
+$$
+Y\to X_1,\qquad
+Y\to X_2,\qquad
+\ldots,\qquad
+Y\to X_d
+$$
+
+<NoteBlock type="definition" title="Simplified definition — why “Naive”?">
+The assumption is “naive” because it treats all features as independent from one another once the class label is known. Real features can still be correlated even within the same class.
+</NoteBlock>
+
+<NoteBlock type="connection" title="Useful connection — Naive Bayes as a Bayesian network">
+The graph $Y\to X_j$ for every feature directly encodes the factorization $P(Y)\prod_j P(X_j\mid Y)$. Classification is inference on that same joint probabilistic model.
+</NoteBlock>
+
+### Feature distributions
+
+The per-feature model depends on the variable type:
+
+- continuous feature → Gaussian density can be used;
+- binary feature → Bernoulli model;
+- categorical feature → categorical probability table.
+
+For Gaussian Naive Bayes:
+
+$$
+X_j\mid Y=y
+\sim
+\mathcal N(\mu_{jy},\sigma_{jy}^2)
+$$
+
+so:
+
+$$
+P(\mathbf{x}\mid Y=y)
+=
+\prod_{j=1}^{d}
+\mathcal N(x_j;\mu_{jy},\sigma_{jy}^2)
+$$
+
+## 11. Hugin Naive Bayes example
+
+The lecturer built a classifier with **Ethnicity** as the class and three observed features:
+
+$$
+Ethnicity\to Hair,
+\qquad
+Ethnicity\to Height,
+\qquad
+Ethnicity\to Weight
+$$
+
+The class states were:
+
+- Latin
+- Slavik
+
+Before evidence, Hugin displayed approximately:
+
+$$
+P(Latin)=0.4118,
+\qquad
+P(Slavik)=0.5882
+$$
+
+Hair was discrete, while Height and Weight were continuous.
+
+The evidence entered was:
+
+$$
+Hair=Brown,
+\qquad
+Height=165,
+\qquad
+Weight=70
+$$
+
+After propagation:
+
+$$
+P(Latin\mid e)\approx1
+$$
+
+while:
+
+$$
+P(Slavik\mid e)
+\approx
+1.44\times10^{-21}
+$$
+
+<NoteBlock type="explanation" title="Further explanation — what Hugin computes">
+For each class $y$, the model combines:
+
+$$
+P(Y=y)
+P(Hair=Brown\mid Y=y)
+p(Height=165\mid Y=y)
+p(Weight=70\mid Y=y)
+$$
+
+and normalizes the two resulting class scores to obtain posterior probabilities.
+</NoteBlock>
+
+## 12. Asia dataset
+
+The lecturer then loaded a small binary **Asia** dataset.
+
+The variables mentioned were:
+
+- Visit to Asia?
+- Smoker?
+- Tuberculosis?
+- Lung Cancer?
+- Bronchitis?
+- Tuberculosis or Cancer
+- Positive X-ray?
+- Dyspnoea?
+
+This part of the lab shifted from manually specifying a network to learning structure from data.
+
+## 13. Structure learning
+
+**Structure learning** attempts to infer the Bayesian-network graph from observations.
+
+This is different from **parameter learning**:
+
+- structure learning → which variables are connected and how;
+- parameter learning → the numerical CPDs or local distributions for a given graph.
+
+Algorithms explicitly mentioned in Hugin included:
+
+- **PC**
+- **NPC**
+- **Greedy**
+
+<NoteBlock type="explanation">
+PC and NPC use conditional-independence information to constrain the graph. A greedy method instead searches candidate graph structures and keeps local changes that improve its scoring criterion.
+</NoteBlock>
+
+## Check your understanding
+
+1. What changes when a Hugin node is made deterministic?
+2. Why do Earthquake and Burglary become dependent after observing Alarm?
+3. How is $P(A,B\mid C)$ related to $P(A,B,C)$?
+4. Why does a continuous child need different Gaussian parameters for different discrete-parent configurations?
+5. Why can $P(\mathbf{x})$ be ignored when comparing classes?
+6. What assumption makes Naive Bayes “naive”?
+7. Why is $P(Y)\prod_jP(X_j\mid Y)$ also a Bayesian-network joint distribution?
+8. What is the difference between parameter learning and structure learning?
+9. How do constraint-based approaches such as PC/NPC differ conceptually from greedy structure search?
+
+## Open questions
+
+- Exact slide ranges within BayesianLab.pdf still need to be matched to the live Hugin steps.
+- The precise Hugin propagation-mode terminology should be verified before it is treated as source-derived wording.
+- The exact mapping of $A$, $B$, and $C$ in the conditional-joint example remains to be matched to the lab source.
+
+</BaseLayout>
