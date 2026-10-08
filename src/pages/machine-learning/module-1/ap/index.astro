@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+---
+<BaseLayout title="A.P. · Machine Learning">
+  <div class="eyebrow">Machine Learning · Module 1</div>
+  <h1>A.P.</h1>
+  <p class="lede">Bayesian networks, graphical-model learning, and probabilistic inference.</p>
+
+  <h2>Classes</h2>
+  <div class="class-grid">
+    <a class="class-card" href={`${base}machine-learning/module-1/ap/class-1/`}>
+      <div class="card-kicker">Class 1</div>
+      <h3>Bayesian Networks</h3>
+      <p>Factorization, conditional independence, d-separation, and explaining away.</p>
+    </a>
+    <a class="class-card" href={`${base}machine-learning/module-1/ap/class-2/`}>
+      <div class="card-kicker">Class 2</div>
+      <h3>Learning in Graphical Models</h3>
+      <p>Parameter estimation, CPTs, priors, incomplete data, and EM.</p>
+    </a>
+    <a class="class-card" href={`${base}machine-learning/module-1/ap/class-3/`}>
+      <div class="card-kicker">Class 3</div>
+      <h3>Hugin Lite and Evidence in Bayesian Networks</h3>
+      <p>Evidence propagation, Naive Bayes, the Asia dataset, and structure learning.</p>
+    </a>
+  </div>
+</BaseLayout>
