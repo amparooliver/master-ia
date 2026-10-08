@@ -42,9 +42,9 @@ The running network began with the collider structure:
 
 <NetworkDiagram variant="collider" />
 
-$
+$$
 Earthquake \to Alarm \leftarrow Burglary
-$
+$$
 
 and was later extended with a **Phone Call** node.
 
@@ -273,12 +273,12 @@ The corresponding Bayesian network is:
 
 <NetworkDiagram variant="naive-bayes" />
 
-$
+$$
 Y\to X_1,\qquad
 Y\to X_2,\qquad
 \ldots,\qquad
 Y\to X_d
-$
+$$
 
 <NoteBlock type="definition" title="Simplified definition — why “Naive”?">
 The assumption is “naive” because it treats all features as independent from one another once the class label is known. Real features can still be correlated even within the same class.
@@ -396,29 +396,29 @@ The variables mentioned were:
 
 The reference Asia structure shown in the diagram is:
 
-$
+$$
 Asia\to Tuberculosis
-$
+$$
 
-$
+$$
 Smoker\to LungCancer,
 \qquad
 Smoker\to Bronchitis
-$
+$$
 
-$
+$$
 Tuberculosis\to (TB\ or\ Cancer)\leftarrow LungCancer
-$
+$$
 
-$
+$$
 (TB\ or\ Cancer)\to PositiveXray,
 \qquad
 (TB\ or\ Cancer)\to Dyspnoea
-$
+$$
 
-$
+$$
 Bronchitis\to Dyspnoea
-$
+$$
 
 This part of the lab shifted from manually specifying a network to learning structure from data.
 
@@ -468,9 +468,9 @@ Before parameter learning, the lecturer initialized the prior-distribution knowl
 
 For a discrete state $k$:
 
-$
+$$
 \alpha_k=1
-$
+$$
 
 <NoteBlock type="definition" title="Simplified definition — what setting all priors to 1 means">
 A symmetric value of 1 acts like one pseudo-observation for every possible state. Before the dataset is considered, no state is favored over another.
@@ -478,12 +478,12 @@ A symmetric value of 1 acts like one pseudo-observation for every possible state
 
 For discrete CPTs, the estimate then has the form:
 
-$
+$$
 P(X=x_k\mid U=u)
 =
 \frac{N_{u,k}+1}
 {\sum_j (N_{u,j}+1)}
-$
+$$
 
 <NoteBlock type="connection" title="Useful connection — Dirichlet priors and Laplace smoothing">
 These values behave like Dirichlet pseudo-counts and avoid exact zero probabilities for unseen configurations. This connects directly to the Dirichlet-prior parameter learning from Class 2.
@@ -494,9 +494,9 @@ These values behave like Dirichlet pseudo-counts and avoid exact zero probabilit
 
 The lecturer then worked with a query of the form:
 
-$
+$$
 P(S=True,L=True\mid E=i)
-$
+$$
 
 where:
 
@@ -506,36 +506,36 @@ where:
 
 The relevant part of the Asia network is:
 
-$
+$$
 S\to L\to E\leftarrow T_b
-$
+$$
 
 where $T_b$ denotes the Tuberculosis variable.
 
 Using conditional probability:
 
-$
+$$
 P(S=True,L=True\mid E=i)
 =
 \frac{P(S=True,L=True,E=i)}
 {P(E=i)}
-$
+$$
 
 ### Marginalizing Tuberculosis
 
 To obtain the numerator, Tuberculosis must be summed out:
 
-$
+$$
 P(S=True,L=True,E=i)
 =
 P(S=True)P(L=True\mid S=True)
 \sum_{t_b}
 P(T_b=t_b)P(E=i\mid T_b=t_b,L=True)
-$
+$$
 
 Therefore:
 
-$
+$$
 P(S=True,L=True\mid E=i)
 =
 \frac{
@@ -544,7 +544,7 @@ P(S=True)P(L=True\mid S=True)
 }{
 P(E=i)
 }
-$
+$$
 
 <NoteBlock type="explanation" title="Further explanation — why Tuberculosis is marginalized">
 Tuberculosis is not fixed by the query, so both of its possible states can contribute to the probability of the evidence. We therefore sum over them rather than choosing one value.
@@ -554,27 +554,27 @@ Tuberculosis is not fixed by the query, so both of its possible states can contr
 
 In the standard Asia network, $E$ represents the deterministic event:
 
-$
+$$
 E = Tuberculosis \lor LungCancer
-$
+$$
 
 If:
 
-$
+$$
 L=True
-$
+$$
 
 then automatically:
 
-$
+$$
 E=True
-$
+$$
 
 regardless of the value of Tuberculosis.
 
 So for $i=True$:
 
-$
+$$
 P(S=True,L=True\mid E=True)
 =
 \frac{
@@ -582,13 +582,13 @@ P(S=True)P(L=True\mid S=True)
 }{
 P(E=True)
 }
-$
+$$
 
 and for $i=False$:
 
-$
+$$
 P(S=True,L=True\mid E=False)=0
-$
+$$
 
 <NoteBlock type="connection" title="Useful connection — deterministic nodes simplify inference">
 The sum over Tuberculosis disappears in the $L=True$, $E=True$ case because the OR node is already guaranteed to be true. Deterministic CPDs can therefore simplify otherwise larger marginalization expressions.
