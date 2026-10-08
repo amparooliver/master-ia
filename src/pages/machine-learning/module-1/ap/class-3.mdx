@@ -38,11 +38,13 @@ The lab workflow included:
 - opening the probability-table view;
 - entering or editing local probability values.
 
-The running network began with:
+The running network began with the collider structure:
 
-$$
+<NetworkDiagram variant="collider" />
+
+$
 Earthquake \to Alarm \leftarrow Burglary
-$$
+$
 
 and was later extended with a **Phone Call** node.
 
@@ -392,6 +394,32 @@ The variables mentioned were:
 - Positive X-ray?
 - Dyspnoea?
 
+The reference Asia structure shown in the diagram is:
+
+$
+Asia\to Tuberculosis
+$
+
+$
+Smoker\to LungCancer,
+\qquad
+Smoker\to Bronchitis
+$
+
+$
+Tuberculosis\to (TB\ or\ Cancer)\leftarrow LungCancer
+$
+
+$
+(TB\ or\ Cancer)\to PositiveXray,
+\qquad
+(TB\ or\ Cancer)\to Dyspnoea
+$
+
+$
+Bronchitis\to Dyspnoea
+$
+
 This part of the lab shifted from manually specifying a network to learning structure from data.
 
 ## 13. Structure learning
@@ -408,9 +436,12 @@ Algorithms explicitly mentioned in Hugin included:
 - **PC**
 - **NPC**
 - **Greedy**
+- **Chow–Liu**
+- **Rebane–Pearl**
+- **TAN**
 
 <NoteBlock type="explanation">
-PC and NPC use conditional-independence information to constrain the graph. A greedy method instead searches candidate graph structures and keeps local changes that improve its scoring criterion.
+PC and NPC use conditional-independence information to constrain the graph. A greedy method instead searches candidate graph structures and keeps local changes that improve its scoring criterion. Chow–Liu and Rebane–Pearl are tree-structured learning approaches, while TAN builds a tree-augmented Naive Bayes structure for classification.
 </NoteBlock>
 
 ### What to pay attention to in structure learning
