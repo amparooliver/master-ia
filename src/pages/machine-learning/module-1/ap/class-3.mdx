@@ -489,6 +489,111 @@ $
 These values behave like Dirichlet pseudo-counts and avoid exact zero probabilities for unseen configurations. This connects directly to the Dirichlet-prior parameter learning from Class 2.
 </NoteBlock>
 
+
+## 15. Conditional probability query in the Asia network
+
+The lecturer then worked with a query of the form:
+
+$
+P(S=True,L=True\mid E=i)
+$
+
+where:
+
+- $S$ = **Smoker**
+- $L$ = **Lung Cancer**
+- $E$ = **Tuberculosis or Cancer**
+
+The relevant part of the Asia network is:
+
+$
+S\to L\to E\leftarrow T_b
+$
+
+where $T_b$ denotes the Tuberculosis variable.
+
+Using conditional probability:
+
+$
+P(S=True,L=True\mid E=i)
+=
+\frac{P(S=True,L=True,E=i)}
+{P(E=i)}
+$
+
+### Marginalizing Tuberculosis
+
+To obtain the numerator, Tuberculosis must be summed out:
+
+$
+P(S=True,L=True,E=i)
+=
+P(S=True)P(L=True\mid S=True)
+\sum_{t_b}
+P(T_b=t_b)P(E=i\mid T_b=t_b,L=True)
+$
+
+Therefore:
+
+$
+P(S=True,L=True\mid E=i)
+=
+\frac{
+P(S=True)P(L=True\mid S=True)
+\sum_{t_b}P(T_b=t_b)P(E=i\mid T_b=t_b,L=True)
+}{
+P(E=i)
+}
+$
+
+<NoteBlock type="explanation" title="Further explanation — why Tuberculosis is marginalized">
+Tuberculosis is not fixed by the query, so both of its possible states can contribute to the probability of the evidence. We therefore sum over them rather than choosing one value.
+</NoteBlock>
+
+### Deterministic OR node
+
+In the standard Asia network, $E$ represents the deterministic event:
+
+$
+E = Tuberculosis \lor LungCancer
+$
+
+If:
+
+$
+L=True
+$
+
+then automatically:
+
+$
+E=True
+$
+
+regardless of the value of Tuberculosis.
+
+So for $i=True$:
+
+$
+P(S=True,L=True\mid E=True)
+=
+\frac{
+P(S=True)P(L=True\mid S=True)
+}{
+P(E=True)
+}
+$
+
+and for $i=False$:
+
+$
+P(S=True,L=True\mid E=False)=0
+$
+
+<NoteBlock type="connection" title="Useful connection — deterministic nodes simplify inference">
+The sum over Tuberculosis disappears in the $L=True$, $E=True$ case because the OR node is already guaranteed to be true. Deterministic CPDs can therefore simplify otherwise larger marginalization expressions.
+</NoteBlock>
+
 ## Check your understanding
 
 1. What changes when a Hugin node is made deterministic?
@@ -500,6 +605,8 @@ These values behave like Dirichlet pseudo-counts and avoid exact zero probabilit
 7. Why is $P(Y)\prod_jP(X_j\mid Y)$ also a Bayesian-network joint distribution?
 8. What is the difference between parameter learning and structure learning?
 9. How do constraint-based approaches such as PC/NPC differ conceptually from greedy structure search?
+10. Why must Tuberculosis be marginalized in $P(S,L\mid E)$ when it is not observed?
+11. Why does the deterministic OR node make $P(S=True,L=True\mid E=False)=0$?
 
 ## Open questions
 
