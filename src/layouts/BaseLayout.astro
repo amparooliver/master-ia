@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
 
-const { title = 'UniTrento Master in AI', description = 'Study notebook for the UniTrento Master in Artificial Intelligence' } = Astro.props;
+const { title = 'Master study notebook', description = 'Structured study notes for a master program' } = Astro.props;
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 const current = Astro.url.pathname;
@@ -89,7 +89,7 @@ const navItems = [
         >
           <span></span><span></span><span></span>
         </button>
-        <a class="brand" href={base}>UniTrento · Master in AI</a>
+        <a class="brand" href={base}>Master study notebook</a>
       </div>
       <div class="top-actions">
         <button class="action-btn" id="search-trigger">Search</button>
