@@ -31,6 +31,44 @@ const { variant = 'chain' } = Astro.props;
       </g>
     </svg>
   )}
+  {variant === 'naive-bayes' && (
+    <svg viewBox="0 0 720 250" role="img" aria-label="Naive Bayes network">
+      <defs><marker id="a4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#a4)">
+        <path d="M360 85 L125 165"/><path d="M360 85 L285 165"/><path d="M360 85 L435 165"/><path d="M360 85 L595 165"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2">
+        <rect x="300" y="30" width="120" height="50" rx="12"/>
+        <rect x="70" y="165" width="110" height="48" rx="12"/><rect x="230" y="165" width="110" height="48" rx="12"/>
+        <rect x="380" y="165" width="110" height="48" rx="12"/><rect x="540" y="165" width="110" height="48" rx="12"/>
+      </g>
+      <g font-family="Poppins, sans-serif" font-size="16" text-anchor="middle" fill="currentColor">
+        <text x="360" y="61">Class Y</text><text x="125" y="195">X₁</text><text x="285" y="195">X₂</text><text x="435" y="195">X₃</text><text x="595" y="195">X₄</text>
+      </g>
+    </svg>
+  )}
+  {variant === 'asia' && (
+    <svg viewBox="0 0 820 430" role="img" aria-label="Asia Bayesian network">
+      <defs><marker id="a5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#a5)">
+        <path d="M140 68 L220 145"/><path d="M650 68 L545 145"/><path d="M650 68 L690 235"/>
+        <path d="M260 170 L385 240"/><path d="M520 170 L435 240"/><path d="M410 275 L300 345"/>
+        <path d="M410 275 L520 345"/><path d="M690 260 L545 345"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2">
+        <rect x="70" y="35" width="140" height="48" rx="12"/><rect x="585" y="35" width="130" height="48" rx="12"/>
+        <rect x="180" y="145" width="160" height="48" rx="12"/><rect x="465" y="145" width="160" height="48" rx="12"/>
+        <rect x="620" y="235" width="140" height="48" rx="12"/><rect x="330" y="235" width="160" height="48" rx="12"/>
+        <rect x="235" y="345" width="130" height="48" rx="12"/><rect x="475" y="345" width="140" height="48" rx="12"/>
+      </g>
+      <g font-family="Poppins, sans-serif" font-size="14" text-anchor="middle" fill="currentColor">
+        <text x="140" y="65">Visit to Asia</text><text x="650" y="65">Smoker</text>
+        <text x="260" y="175">Tuberculosis</text><text x="545" y="175">Lung cancer</text>
+        <text x="690" y="265">Bronchitis</text><text x="410" y="265">TB or cancer</text>
+        <text x="300" y="375">Positive X-ray</text><text x="545" y="375">Dyspnoea</text>
+      </g>
+    </svg>
+  )}
   {variant === 'chain' && (
     <svg viewBox="0 0 680 130" role="img">
       <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
