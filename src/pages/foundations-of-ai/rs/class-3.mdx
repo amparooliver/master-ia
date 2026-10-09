@@ -1,0 +1,77 @@
+---
+title: "Class 3 — Problem Solving as Search"
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../components/NoteBlock.astro';
+import SlideDeck from '../../../components/SlideDeck.astro';
+import SlideReference from '../../../components/SlideReference.astro';
+import NetworkDiagram from '../../../components/NetworkDiagram.astro';
+
+<BaseLayout title="Class 3 — Problem Solving as Search · R.S.">
+<div class="eyebrow">Foundations of AI · R.S.</div>
+
+# Class 3 — Problem Solving as Search
+
+This lecture introduces the standard offline-search formulation: formulate a goal and problem, search for an action sequence, then execute it.
+
+<SlideDeck src="slides/foundations-of-ai/rs/03-search-small_compressed.pdf" title="Search slides" />
+
+## Essential summary
+
+- Many AI problems can be formulated as search in a state space.
+- The pipeline is goal formulation → problem formulation → search → execution.
+- The Romania example uses atomic, fully observable, discrete, known, deterministic states.
+- Search usually generates successor states on demand rather than storing the entire state graph.
+- Offline search occurs inside the agent before acting.
+
+## 1. Problem solving as search
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/03-search-small_compressed.pdf" page={4} /></div>
+
+A problem-solving agent follows four stages:
+
+1. **Goal formulation** — define successful states.
+2. **Problem formulation** — define states, legal actions, and transitions.
+3. **Search** — find a sequence of actions.
+4. **Execution** — perform that sequence.
+
+## 2. Romania route example
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/03-search-small_compressed.pdf" page={5} to={7} /></div>
+
+The agent starts in **Arad** and must reach **Bucharest**.
+
+<NetworkDiagram variant="romania-route" />
+
+One possible route is:
+
+$$
+Arad\to Sibiu\to Fagaras\to Bucharest
+$$
+
+The example assumes atomic states, full observability, discrete choices, a known environment, and deterministic transitions.
+
+## 3. Implicit state graphs
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/03-search-small_compressed.pdf" page={8} /></div>
+
+In practical AI search, the complete graph is usually not explicitly stored. Successor states are generated **on demand** by applying actions.
+
+<NoteBlock type="connection">
+This differs from traversing an already supplied graph. The search procedure is part of the agent's planning process.
+</NoteBlock>
+
+## 4. Offline search
+
+Search here happens before physical action. The agent computes a plan, then executes it.
+
+This contrasts with **online search**, where acting reveals previously unknown information about the environment.
+
+## Check your understanding
+
+1. What is the difference between goal formulation and problem formulation?
+2. Which assumptions make the Romania example simple?
+3. Why are successors usually generated on demand?
+4. How does offline search differ from online exploration?
+
+</BaseLayout>
