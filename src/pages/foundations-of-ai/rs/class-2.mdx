@@ -1,0 +1,104 @@
+---
+title: "Class 2 — Intelligent Agents"
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../components/NoteBlock.astro';
+import SlideDeck from '../../../components/SlideDeck.astro';
+import SlideReference from '../../../components/SlideReference.astro';
+
+<BaseLayout title="Class 2 — Intelligent Agents · R.S.">
+<div class="eyebrow">Foundations of AI · R.S.</div>
+
+# Class 2 — Intelligent Agents
+
+This lecture develops the agent abstraction, rationality, PEAS task descriptions, environment properties, and state representations.
+
+<SlideDeck src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" title="Intelligent Agents slides" />
+
+## Essential summary
+
+- An agent perceives through sensors and acts through actuators.
+- An agent function maps percept histories to actions.
+- Rationality depends on the performance measure, available actions, prior knowledge, and percept history.
+- PEAS describes a task environment.
+- Observability, uncertainty, number of agents, temporal structure, and continuity affect agent design.
+- “Known” and “observable” describe different properties.
+- Atomic, factored, and structured state representations provide increasing expressive power.
+
+## 1. Agents and agent functions
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" page={4} to={6} /></div>
+
+An agent perceives its environment through **sensors** and acts through **actuators**.
+
+A percept is the sensory input at one instant. A percept sequence is the complete history observed so far.
+
+$$
+f:P^*\rightarrow A
+$$
+
+## 2. Vacuum-world example
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" page={7} to={8} /></div>
+
+The agent perceives its current location and whether the square is dirty. Possible actions include Left, Right, Suck, and NoOp.
+
+## 3. Rationality
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" page={9} to={10} /></div>
+
+A rational agent chooses the action expected to maximize its performance measure given the performance measure, available actions, prior environmental knowledge, and percept history.
+
+<NoteBlock type="connection">
+Changing the performance measure can change which behavior is rational.
+</NoteBlock>
+
+## 4. PEAS
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" page={12} to={13} /></div>
+
+**PEAS** stands for Performance measure, Environment, Actuators, and Sensors.
+
+The taxi example illustrates how safety, speed, legality, comfort, and profit can conflict.
+
+## 5. Properties of task environments
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" page={15} to={23} /></div>
+
+| Property | Contrast |
+| --- | --- |
+| Observability | fully observable / partially observable |
+| Agents | single-agent / multi-agent |
+| Outcomes | deterministic / stochastic / nondeterministic |
+| Temporal structure | episodic / sequential |
+| Change over time | static / dynamic / semidynamic |
+| Representation | discrete / continuous |
+| Model knowledge | known / unknown |
+
+<NoteBlock type="definition">
+A known environment is one whose transition laws are known. A fully observable environment is one whose relevant current state can be perceived. These are independent properties.
+</NoteBlock>
+
+## 6. State representations
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/02-IntelligentAgents-small_compressed.pdf" page={25} to={28} /></div>
+
+**Atomic:** a state is an indivisible label.
+
+**Factored:** a state is represented as a vector of attributes.
+
+**Structured:** objects, attributes, and relations are explicitly represented.
+
+<NoteBlock type="connection">
+More expressive representations can support richer reasoning, but usually increase computational complexity.
+</NoteBlock>
+
+## Check your understanding
+
+1. How do percept, percept sequence, agent function, and agent program differ?
+2. Why can two performance measures make different actions rational?
+3. What does PEAS describe?
+4. Why are known and fully observable different?
+5. How do atomic, factored, and structured representations differ?
+
+</BaseLayout>
