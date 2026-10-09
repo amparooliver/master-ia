@@ -69,6 +69,43 @@ const { variant = 'chain' } = Astro.props;
       </g>
     </svg>
   )}
+  {variant === 'romania-route' && (
+    <svg viewBox="0 0 760 260" role="img" aria-label="Romania route example">
+      <defs><marker id="a6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#a6)">
+        <path d="M150 130 L300 70"/><path d="M360 70 L500 130"/><path d="M560 130 L660 130"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2">
+        <rect x="80" y="105" width="140" height="50" rx="12"/>
+        <rect x="270" y="45" width="120" height="50" rx="12"/>
+        <rect x="470" y="105" width="120" height="50" rx="12"/>
+        <rect x="630" y="105" width="100" height="50" rx="12"/>
+      </g>
+      <g font-family="Poppins, sans-serif" font-size="16" text-anchor="middle" fill="currentColor">
+        <text x="150" y="136">Arad</text><text x="330" y="76">Sibiu</text><text x="530" y="136">Fagaras</text><text x="680" y="136">Bucharest</text>
+      </g>
+    </svg>
+  )}
+  {variant === 'lrta-grid' && (
+    <svg viewBox="0 0 720 420" role="img" aria-label="LRTA star Example 2 graph">
+      <g fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M140 90 L360 90 L580 90"/>
+        <path d="M140 210 L360 210 L580 210"/>
+        <path d="M140 330 L360 330 L580 330"/>
+        <path d="M580 90 L580 210 L580 330"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" stroke-width="2">
+        <rect x="90" y="60" width="100" height="60" rx="12"/><rect x="310" y="60" width="100" height="60" rx="12"/><rect x="530" y="60" width="100" height="60" rx="12"/>
+        <rect x="90" y="180" width="100" height="60" rx="12"/><rect x="310" y="180" width="100" height="60" rx="12"/><rect x="530" y="180" width="100" height="60" rx="12"/>
+        <rect x="90" y="300" width="100" height="60" rx="12"/><rect x="310" y="300" width="100" height="60" rx="12"/><rect x="530" y="300" width="100" height="60" rx="12"/>
+      </g>
+      <g font-family="Poppins, sans-serif" font-size="15" text-anchor="middle" fill="currentColor">
+        <text x="140" y="87">N1 · h=2</text><text x="360" y="87">N2 · h=3</text><text x="580" y="82">N3 · h=4</text><text x="580" y="102">Start</text>
+        <text x="140" y="207">N4 · h=1</text><text x="360" y="207">N5 · h=2</text><text x="580" y="207">N6 · h=3</text>
+        <text x="140" y="327">N7 · h=0</text><text x="140" y="347">Goal</text><text x="360" y="327">N8 · h=1</text><text x="580" y="327">N9 · h=2</text>
+      </g>
+    </svg>
+  )}
   {variant === 'chain' && (
     <svg viewBox="0 0 680 130" role="img">
       <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="currentColor" /></marker></defs>
