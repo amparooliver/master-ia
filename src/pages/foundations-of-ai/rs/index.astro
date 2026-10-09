@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+---
+<BaseLayout title="R.S. · Foundations of AI">
+  <div class="eyebrow">Foundations of AI</div>
+  <h1>R.S.</h1>
+  <p class="lede">Lecture notes organized around the course slide decks and class explanations.</p>
+
+  <h2>Classes</h2>
+  <div class="class-grid">
+    <a class="class-card" href={`${base}foundations-of-ai/rs/class-1/`}>
+      <div class="card-kicker">Class 1</div>
+      <h3>Introduction to AI</h3>
+      <p>Definitions of AI, rational agents, Turing test, GPS, and symbolic vs. connectionist approaches.</p>
+    </a>
+    <a class="class-card" href={`${base}foundations-of-ai/rs/class-2/`}>
+      <div class="card-kicker">Class 2</div>
+      <h3>Intelligent Agents</h3>
+      <p>Agents, rationality, PEAS, task environments, and state representations.</p>
+    </a>
+    <a class="class-card" href={`${base}foundations-of-ai/rs/class-3/`}>
+      <div class="card-kicker">Class 3</div>
+      <h3>Problem Solving as Search</h3>
+      <p>Goal/problem formulation, the Romania example, and implicit state-space search.</p>
+    </a>
+    <a class="class-card" href={`${base}foundations-of-ai/rs/class-4/`}>
+      <div class="card-kicker">Class 4</div>
+      <h3>Online Search and LRTA*</h3>
+      <p>Learning Real-Time A*, optimism under uncertainty, pseudocode, and the N1–N9 worked example.</p>
+    </a>
+  </div>
+</BaseLayout>
