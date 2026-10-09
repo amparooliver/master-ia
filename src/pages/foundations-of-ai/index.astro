@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+---
+<BaseLayout title="Foundations of AI">
+  <div class="eyebrow">Master study notebook</div>
+  <h1>Foundations of AI</h1>
+  <p class="lede">Core AI foundations: intelligent agents, problem solving, search, and online exploration.</p>
+
+  <h2>Instructor</h2>
+  <div class="class-grid">
+    <a class="class-card" href={`${base}foundations-of-ai/rs/`}>
+      <div class="card-kicker">R.S.</div>
+      <h3>Course notes</h3>
+      <p>Structured lecture notes with slide references, algorithms, worked examples, and diagrams.</p>
+    </a>
+  </div>
+</BaseLayout>
