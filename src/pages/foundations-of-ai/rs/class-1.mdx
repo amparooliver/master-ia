@@ -1,0 +1,104 @@
+---
+title: "Class 1 — Introduction to AI"
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../components/NoteBlock.astro';
+import SlideDeck from '../../../components/SlideDeck.astro';
+
+<BaseLayout title="Class 1 — Introduction to AI · R.S.">
+<div class="eyebrow">Foundations of AI · R.S.</div>
+
+# Class 1 — Introduction to AI
+
+This lecture introduces the main ways AI has been defined and motivates the course's focus on rational agents.
+
+<SlideDeck src="slides/foundations-of-ai/rs/01-AI-intro-smaller_compressed.pdf" title="Introduction to AI slides" />
+
+## Essential summary
+
+- AI can be organized along two axes: **thinking vs. acting** and **human-like vs. rational**.
+- The four classical approaches are thinking humanly, acting humanly, thinking rationally, and acting rationally.
+- The course emphasizes **rational agents** rather than requiring human imitation.
+- Newell and Simon's General Problem Solver is an early example of cognitive modeling using means–ends analysis.
+- The Turing test operationalizes intelligent behavior through indistinguishability in conversation.
+- Logic supports rational reasoning, but representation and computational complexity limit purely logic-based approaches.
+- Symbolic and connectionist systems use fundamentally different representations.
+
+## 1. What is AI?
+
+AI spans problem solving, knowledge representation, reasoning, planning, uncertainty, and learning.
+
+A useful way to classify definitions is:
+
+| | Human standard | Ideal/rational standard |
+| --- | --- | --- |
+| **Thinking** | Thinking humanly | Thinking rationally |
+| **Acting** | Acting humanly | Acting rationally |
+
+## 2. Thinking humanly
+
+The goal is to model how humans actually think.
+
+Newell and Simon's **General Problem Solver (GPS)** is a classic example. It uses **means–ends analysis**:
+
+1. compare the current state with the goal state;
+2. identify a difference;
+3. choose an operator that can reduce that difference;
+4. apply it and repeat.
+
+<NoteBlock type="connection">
+Solving a problem well and modeling how a human solves it are different objectives. Cognitive modeling cares about the second.
+</NoteBlock>
+
+## 3. Acting humanly — the Turing test
+
+Alan Turing's imitation game asks whether an interrogator can distinguish a machine from a human through interaction.
+
+Capabilities associated with the test include natural-language processing, knowledge representation, automated reasoning, and machine learning.
+
+The **Total Turing Test** additionally requires perception and physical interaction, such as vision and robotics.
+
+## 4. Thinking rationally
+
+The “laws of thought” tradition uses formal logic to derive correct conclusions.
+
+A classical syllogism is:
+
+$$
+\text{All men are mortal},\qquad
+\text{Socrates is a man}
+$$
+
+therefore:
+
+$$
+\text{Socrates is mortal}
+$$
+
+Two major limitations are translating informal or uncertain knowledge into formal logic and computational feasibility.
+
+## 5. Acting rationally
+
+A rational agent selects actions expected to produce the best outcome, or best expected outcome under uncertainty.
+
+Perfect rationality is often computationally infeasible. This motivates **bounded/limited rationality**: acting appropriately given finite time and resources.
+
+## 6. Symbolic and connectionist AI
+
+Symbolic systems explicitly represent knowledge with rules, logic, ontologies, and declarative models.
+
+Connectionist systems learn distributed representations, especially through neural networks.
+
+<NoteBlock type="connection">
+Neuro-symbolic AI tries to combine learned representations with explicit symbolic reasoning.
+</NoteBlock>
+
+## Check your understanding
+
+1. What are the two axes behind the four classical definitions of AI?
+2. How does GPS use means–ends analysis?
+3. What exactly does the Turing test measure?
+4. Why is acting rationally broader than thinking rationally?
+5. What is the main representational difference between symbolic and connectionist AI?
+
+</BaseLayout>
