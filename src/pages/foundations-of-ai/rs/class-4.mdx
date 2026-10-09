@@ -1,0 +1,156 @@
+---
+title: "Class 4 — Online Search and LRTA*"
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteBlock from '../../../components/NoteBlock.astro';
+import SlideDeck from '../../../components/SlideDeck.astro';
+import SlideReference from '../../../components/SlideReference.astro';
+import NetworkDiagram from '../../../components/NetworkDiagram.astro';
+
+<BaseLayout title="Class 4 — Online Search and LRTA* · R.S.">
+<div class="eyebrow">Foundations of AI · R.S.</div>
+
+# Class 4 — Online Search and LRTA*
+
+LRTA* combines local action selection with memory. The agent learns action outcomes and updates its estimate of remaining cost while interacting with the environment.
+
+<SlideDeck src="slides/foundations-of-ai/rs/04-beyond-classicalsearch.pdf" title="Beyond Classical Search slides" />
+
+## Essential summary
+
+- LRTA* is an online search algorithm: planning and acting are interleaved.
+- $h(s)$ is the initial heuristic; $H(s)$ is the stored estimate learned through experience.
+- Unknown action outcomes are treated optimistically.
+- After observing a transition, LRTA* updates the **previous** state's value.
+- The next action is selected from the **current** state.
+- An update can leave $H(s)$ numerically unchanged.
+- Returning to a previously visited state is not DFS backtracking.
+- In finite safely explorable environments, LRTA* is guaranteed to reach a goal.
+
+## 1. Online search with memory
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/04-beyond-classicalsearch.pdf" page={59} /></div>
+
+| Symbol | Meaning |
+| --- | --- |
+| $h(s)$ | initial heuristic estimate |
+| $H(s)$ | current learned estimate |
+| $s$ | previous state |
+| $s'$ | current observed state |
+| $result[s,a]$ | learned outcome of action $a$ from $s$ |
+
+For a newly encountered state:
+
+$$
+H(s')\leftarrow h(s')
+$$
+
+## 2. Optimism under uncertainty
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/04-beyond-classicalsearch.pdf" page={59} to={60} /></div>
+
+For an unknown successor:
+
+$$
+LRTA\text{-}COST(s,a,t,H)=h(s)
+$$
+
+For a known transition:
+
+$$
+LRTA\text{-}COST(s,a,t,H)=c(s,a,t)+H(t)
+$$
+
+<NoteBlock type="connection" title="Professor emphasis — optimism under uncertainty">
+Unknown actions retain an optimistic estimate, so they can look more attractive than routes already explored and found costly. This encourages exploration.
+</NoteBlock>
+
+## 3. Updating the previous state
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/04-beyond-classicalsearch.pdf" page={60} /></div>
+
+After observing the new state $s'$:
+
+$$
+H(s)\leftarrow
+\min_{b\in Actions(s)}
+LRTA\text{-}COST(s,b,result[s,b],H)
+$$
+
+The next action is:
+
+$$
+a\leftarrow
+\arg\min_{b\in Actions(s')}
+LRTA\text{-}COST(s',b,result[s',b],H)
+$$
+
+<NoteBlock type="connection" title="Book correction">
+The action-selection line must use $Actions(s')$, the current state. The previous-state backup correctly uses $Actions(s)$.
+</NoteBlock>
+
+## 4. Example 2
+
+<div class="section-source"><SlideReference src="slides/foundations-of-ai/rs/04-beyond-classicalsearch.pdf" page={62} to={63} /></div>
+
+Start: **N3**. Goal: **N7**. Each edge costs 1. Ties are resolved **↑, ←, ↓, →**.
+
+<NetworkDiagram variant="lrta-grid" />
+
+Initial values:
+
+| State | h | State | h | State | h |
+| --- | ---: | --- | ---: | --- | ---: |
+| N1 | 2 | N2 | 3 | N3 | 4 |
+| N4 | 1 | N5 | 2 | N6 | 3 |
+| N7 | 0 | N8 | 1 | N9 | 2 |
+
+The slide trace is:
+
+<pre>N3 → N2 → N1 → N2 → N3 → N6 → N3 → N6
+→ N5 → N4 → N5 → N6 → N9 → N6 → N9 → N8 → N7</pre>
+
+### Why an update can stay equal
+
+After $N3\to N2$, the known left action has:
+
+$$
+1+H(N2)=4
+$$
+
+while the untried downward action is estimated at $h(N3)=4$.
+
+Therefore:
+
+$$
+H(N3)\leftarrow\min(4,4)=4
+$$
+
+The update happened even though the number did not change.
+
+### Why going back is not DFS backtracking
+
+On the first visit to N6, several actions are untried and share the same optimistic estimate. Tie-breaking selects the upward action, returning to N3.
+
+<NoteBlock type="definition">
+This is a new action choice under the LRTA* decision rule. It is not DFS backtracking: no search stack is being popped because a subtree was exhausted.
+</NoteBlock>
+
+## 5. Goal-reaching guarantee
+
+The slide states that LRTA* reaches a goal in any **finite, safely explorable environment**.
+
+<NoteBlock type="explanation">
+This does not mean the first route is optimal. Exploration and revisits can increase the actual path cost.
+</NoteBlock>
+
+## Check your understanding
+
+1. What is the difference between $h(s)$ and $H(s)$?
+2. Why do unknown actions encourage exploration?
+3. Which state's $H$ value is updated after an action is executed?
+4. Why can a backup leave $H(s)$ unchanged?
+5. Why is returning to N3 not DFS backtracking?
+6. What does the finite safely explorable guarantee actually promise?
+
+</BaseLayout>
